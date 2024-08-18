@@ -1,1 +1,24 @@
-
+import java.util.Scanner;
+public class ImprimirCargo {
+    public static void calcularHora(double hora) {
+        double cargo=0;
+        double horaRestante;
+        if (hora == 1){
+            System.out.println("Su cargo del estacionamiento es de S/ 3.00");
+        } else{
+            horaRestante = hora - 1;
+            cargo = (horaRestante*0.5)+3;
+        }
+        if (cargo >= 12){
+            System.out.println("Su cargo del estacionamiento es de S/ 12.00");
+        } else{
+            System.out.println("Su cargo del estacionamiento es de S/ "+cargo);
+        }
+    }
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Ingrese el número de horas: ");
+        float hora = scanner.nextFloat();
+        calcularHora(hora);
+    }
+}
