@@ -1,1 +1,25 @@
-
+import java.util.Scanner;
+public class MenorNumero {
+    public static double CompararNumero(double na, double nb, double nc) {
+        double menor = na;
+        if (nb < menor) {
+            menor = nb;
+        }
+        if (nc < menor) {
+            menor = nc;
+        }
+        return menor;
+    }
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Al momento de ingresar los valores que sean separados por COMA,gracias");
+        System.out.println("Ingrese el primer número: ");
+        double na = scanner.nextDouble();
+        System.out.println("Ingrese el segundo número: ");
+        double nb = scanner.nextDouble();
+        System.out.println("Ingrese el tercer número: ");
+        double nc = scanner.nextDouble();
+        double menor = CompararNumero(na, nb, nc);
+        System.out.println("El menor número es: " + menor);
+    }
+}
