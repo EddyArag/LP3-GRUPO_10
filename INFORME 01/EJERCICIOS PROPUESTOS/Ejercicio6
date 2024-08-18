@@ -1,1 +1,22 @@
+import java.util.Scanner;
 
+public class ConvertirHoras{
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduce la hora: ");
+        System.out.println("Primero ingrese la hora: ");
+        int hora = scanner.nextInt();
+        System.out.println("Ahora ingrese los minutos ");
+        int minutos = scanner.nextInt();
+        System.out.println("Por ultimo ingrese los segundos:  ");
+        int segundos = scanner.nextInt();
+        if (hora < 0 || hora >= 23 || minutos < 0 || minutos >= 60 || segundos < 0 || segundos >= 60) {
+            System.out.println("Error: Por favor ingrese valores válidos.");
+        } 
+        else {
+            System.out.println("La hora es: "+hora+":"+minutos+":"+segundos);
+            int horaSegundos = (hora *3600)+(minutos*60)+segundos;
+            System.out.println("La hora en segundo es: "+horaSegundos);
+        }
+    }
+}
