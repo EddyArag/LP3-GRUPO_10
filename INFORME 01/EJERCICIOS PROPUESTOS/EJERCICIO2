@@ -1,1 +1,47 @@
+import java.util.Scanner;
 
+public class EJERCICIO2 {
+    public static void main(String[] args) {
+        // Crea un arreglo unidimensional de 10 enteros
+        int[] nums = new int[10];
+
+        // Crea un objeto Scanner para leer la entrada del usuario
+        Scanner entrada = new Scanner(System.in);
+
+        // Recorre cada índice del arreglo para recibir números del usuario
+        for (int i = 0; i < 10; i++) {
+            // Declara una variable para almacenar el número ingresado
+            int num;
+
+            // Lee un número entero desde la entrada del usuario
+            num = entrada.nextInt();
+
+            // Si no es el primer elemento (i != 0), verifica que el número ingresado sea
+            // mayor que el anterior
+            if (i != 0) {
+                // Mientras el número ingresado sea menor o igual que el número en la posición
+                // anterior
+                while (num <= nums[i - 1]) {
+                    // Solicita al usuario que ingrese un número mayor que el anterior
+                    System.out.println("Ingrese un número mayor a " + nums[i - 1]);
+                    // Lee un nuevo número desde la entrada del usuario
+                    num = entrada.nextInt();
+                }
+                // Almacena el número válido en el arreglo en la posición actual
+                nums[i] = num;
+            } else {
+                // Para el primer elemento, simplemente almacena el número ingresado
+                nums[i] = num;
+            }
+        }
+
+        // Imprime los elementos del arreglo
+        for (int i = 0; i < 10; i++) {
+            // Muestra el valor del elemento en la posición actual
+            System.out.println("Elemento en la posición " + (i + 1) + " es: " + nums[i]);
+        }
+
+        // Cierra el objeto Scanner para liberar el recurso
+        entrada.close();
+    }
+}
