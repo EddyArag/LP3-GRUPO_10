@@ -1,1 +1,36 @@
+Python:
+def sumar_arreglo(arreglo):
+    return sum(arreglo)
+
+C++:
+#include <iostream>
+using namespace std;
+int sumarArreglo(int arreglo[], int n) {
+    int suma = 0;
+    for (int i = 0; i < n; i++) {
+        suma += arreglo[i];
+    }
+    return suma;
+}
+int main() {
+    int arreglo[] = {1, 2, 3, 4, 5};
+    int n = sizeof(arreglo) / sizeof(arreglo[0]);
+    cout << "Suma: " << sumarArreglo(arreglo, n) << endl;
+    return 0;
+}
+
+ Java:
+public class SumaArreglo {
+    public static int sumarArreglo(int[] arreglo) {
+        int suma = 0;
+        for (int num : arreglo) {
+            suma += num;
+        }
+        return suma;
+    }
+    public static void main(String[] args) {
+        int[] arreglo = {1, 2, 3, 4, 5};
+        System.out.println("Suma: " + sumarArreglo(arreglo));
+    }
+}
 
