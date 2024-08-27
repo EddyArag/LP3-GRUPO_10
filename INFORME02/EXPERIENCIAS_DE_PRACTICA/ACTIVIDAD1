@@ -1,1 +1,176 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class Coche {
+    // Atributos
+    private String marca;
+    private String modelo;
+    private int añoFabricacion;
+    private double precio;
+
+    // Lista de marcas válidas
+    private static final List<String> MARCAS_VALIDAS = Arrays.asList("Ferrari", "Toyota", "Ford", "BMW", "Audi");
+    private static final List<String> MARCAS_TODO_TERRENO = Arrays.asList("Toyota", "Land Rover", "Jeep", "Nissan", "Ford");
+
+    // Año máximo de fabricación permitido
+    private static final int AÑO_MAXIMO = 2024;
+
+    // Constructor por defecto
+    public Coche() {
+        this.marca = "";
+        this.modelo = "";
+        this.añoFabricacion = 0;
+        this.precio = 0.0;
+    }
+
+    // Constructor con cuatro parámetros
+    public Coche(String marca, String modelo, int añoFabricacion, double precio) {
+        setMarca(marca);
+        this.modelo = modelo;
+        setAñoFabricacion(añoFabricacion);
+        this.precio = precio;
+    }
+
+    // Método para aplicar descuento
+    public boolean aplicarDescuento(double descuento) {
+        if (añoFabricacion < 2010) {
+            precio -= descuento;
+            System.out.println("Descuento de " + descuento + " aplicado. Nuevo precio: " + precio);
+            return true; // Se aplicó el descuento
+        }
+        System.out.println("No se aplicó el descuento. Año de fabricación: " + añoFabricacion);
+        return false; // No se aplicó el descuento
+    }
+
+    // Métodos getter y setter con validaciones
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        if (MARCAS_VALIDAS.contains(marca) || MARCAS_TODO_TERRENO.contains(marca)) {
+            this.marca = marca;
+        } else {
+            throw new IllegalArgumentException("Marca no válida. Las marcas válidas son: " + MARCAS_VALIDAS + " y " + MARCAS_TODO_TERRENO);
+        }
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public int getAñoFabricacion() {
+        return añoFabricacion;
+    }
+
+    public void setAñoFabricacion(int añoFabricacion) {
+        if (añoFabricacion <= AÑO_MAXIMO) {
+            this.añoFabricacion = añoFabricacion;
+        } else {
+            throw new IllegalArgumentException("El año de fabricación no puede ser mayor a " + AÑO_MAXIMO);
+        }
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    // Métodos adicionales para encender, acelerar, frenar y apagar el coche
+    public void encender() {
+        System.out.println("El coche está encendido.");
+    }
+
+    public void acelerar() {
+        System.out.println("El coche está acelerando.");
+    }
+
+    public void frenar() {
+        System.out.println("El coche está frenando.");
+    }
+
+    public void apagar() {
+        System.out.println("El coche está apagado.");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Crear coche deportivo con entrada de usuario
+        System.out.println("Ingrese los detalles del coche deportivo:");
+        Coche cocheDeportivo = crearCoche(scanner);
+
+        // Crear coche todo terreno con entrada de usuario
+        System.out.println("Ingrese los detalles del coche todo terreno:");
+        Coche cocheTodoTerreno = crearCoche(scanner);
+
+        // Interacción con coche deportivo
+        cocheDeportivo.encender();
+        cocheDeportivo.acelerar();
+        cocheDeportivo.frenar();
+        cocheDeportivo.apagar();
+
+        // Interacción con coche todo terreno
+        cocheTodoTerreno.encender();
+        cocheTodoTerreno.acelerar();
+        cocheTodoTerreno.frenar();
+        cocheTodoTerreno.apagar();
+
+        // Aplicar descuento a ambos coches
+        System.out.println("Aplicando descuento a coche deportivo:");
+        boolean descuentoAplicadoDeportivo = cocheDeportivo.aplicarDescuento(5000);
+
+        System.out.println("Aplicando descuento a coche todo terreno:");
+        boolean descuentoAplicadoTodoTerreno = cocheTodoTerreno.aplicarDescuento(5000);
+
+        // Mostrar resultados
+        System.out.println("Precio del coche deportivo después del descuento: " + cocheDeportivo.getPrecio());
+        System.out.println("¿Descuento aplicado al coche deportivo? " + descuentoAplicadoDeportivo);
+
+        System.out.println("Precio del coche todo terreno después del descuento: " + cocheTodoTerreno.getPrecio());
+        System.out.println("¿Descuento aplicado al coche todo terreno? " + descuentoAplicadoTodoTerreno);
+
+        scanner.close();
+    }
+
+    // Método auxiliar para crear un coche a partir de la entrada del usuario
+    private static Coche crearCoche(Scanner scanner) {
+        System.out.println("Marca (válidas: Ferrari, Toyota, Ford, BMW, Audi, Land Rover, Jeep, Nissan):");
+        String marca;
+        while (true) {
+            marca = scanner.nextLine();
+            if (MARCAS_VALIDAS.contains(marca) || MARCAS_TODO_TERRENO.contains(marca)) {
+                break;
+            }
+            System.out.println("Marca no válida. Intente de nuevo:");
+        }
+
+        System.out.println("Modelo:");
+        String modelo = scanner.nextLine();
+
+        int añoFabricacion;
+        while (true) {
+            System.out.println("Año de fabricación (máximo " + AÑO_MAXIMO + "):");
+            añoFabricacion = scanner.nextInt();
+            if (añoFabricacion <= AÑO_MAXIMO) {
+                break;
+            }
+            System.out.println("Año de fabricación no válido. Intente de nuevo:");
+        }
+
+        System.out.println("Precio:");
+        double precio = scanner.nextDouble();
+        scanner.nextLine(); // Limpiar buffer
+
+        return new Coche(marca, modelo, añoFabricacion, precio);
+    }
+}
 
