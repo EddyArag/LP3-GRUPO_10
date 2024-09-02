@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 // AQUI SE CREA LA CLASE abstracta Persona
 abstract class Persona {
@@ -133,17 +134,70 @@ class SistemaGestion {
 // Clase principal para probar el sistema
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         // Crear profesores
-        Profesor prof1 = new Profesor("Dr. Juan Pérez", "Calle 123", "jperez@universidad.edu", "Matemáticas");
-        Profesor prof2 = new Profesor("Dra. Ana Gómez", "Calle 456", "agomez@universidad.edu", "Programación");
+        System.out.print("Ingrese nombre del profesor 1: ");
+        String nombreProf1 = scanner.nextLine();
+        System.out.print("Ingrese direccion del profesor 1: ");
+        String direccionProf1 = scanner.nextLine();
+        System.out.print("Ingrese email del profesor 1: ");
+        String emailProf1 = scanner.nextLine();
+        System.out.print("Ingrese especialidad del profesor 1: ");
+        String especialidadProf1 = scanner.nextLine();
+        Profesor prof1 = new Profesor(nombreProf1, direccionProf1, emailProf1, especialidadProf1);
+
+        System.out.print("Ingrese nombre del profesor 2: ");
+        String nombreProf2 = scanner.nextLine();
+        System.out.print("Ingrese direccion del profesor 2: ");
+        String direccionProf2 = scanner.nextLine();
+        System.out.print("Ingrese email del profesor 2: ");
+        String emailProf2 = scanner.nextLine();
+        System.out.print("Ingrese especialidad del profesor 2: ");
+        String especialidadProf2 = scanner.nextLine();
+        Profesor prof2 = new Profesor(nombreProf2, direccionProf2, emailProf2, especialidadProf2);
 
         // Crear cursos
-        Curso curso1 = new Curso("Cálculo I", prof1, "Matemáticas", 30);
-        Curso curso2 = new Curso("Programación en Java", prof2, "Programación", 25);
+        System.out.print("Ingrese nombre del curso 1: ");
+        String nombreCurso1 = scanner.nextLine();
+        System.out.print("Ingrese categoria del curso 1: ");
+        String categoriaCurso1 = scanner.nextLine();
+        System.out.print("Ingrese maximo de estudiantes del curso 1: ");
+        int maxEstudiantesCurso1 = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
+        Curso curso1 = new Curso(nombreCurso1, prof1, categoriaCurso1, maxEstudiantesCurso1);
+
+        System.out.print("Ingrese nombre del curso 2: ");
+        String nombreCurso2 = scanner.nextLine();
+        System.out.print("Ingrese categoria del curso 2: ");
+        String categoriaCurso2 = scanner.nextLine();
+        System.out.print("Ingrese maximo de estudiantes del curso 2: ");
+        int maxEstudiantesCurso2 = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
+        Curso curso2 = new Curso(nombreCurso2, prof2, categoriaCurso2, maxEstudiantesCurso2);
 
         // Crear estudiantes
-        Estudiante est1 = new Estudiante("Carlos López", "Avenida 789", "clopez@estudiantes.edu", 1001);
-        Estudiante est2 = new Estudiante("María Fernández", "Avenida 101", "mfernandez@estudiantes.edu", 1002);
+        System.out.print("Ingrese nombre del estudiante 1: ");
+        String nombreEst1 = scanner.nextLine();
+        System.out.print("Ingrese direccion del estudiante 1: ");
+        String direccionEst1 = scanner.nextLine();
+        System.out.print("Ingrese email del estudiante 1: ");
+        String emailEst1 = scanner.nextLine();
+        System.out.print("Ingrese codigo del estudiante 1: ");
+        int codigoEst1 = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
+        Estudiante est1 = new Estudiante(nombreEst1, direccionEst1, emailEst1, codigoEst1);
+
+        System.out.print("Ingrese nombre del estudiante 2: ");
+        String nombreEst2 = scanner.nextLine();
+        System.out.print("Ingrese direccion del estudiante 2: ");
+        String direccionEst2 = scanner.nextLine();
+        System.out.print("Ingrese email del estudiante 2: ");
+        String emailEst2 = scanner.nextLine();
+        System.out.print("Ingrese codigo del estudiante 2: ");
+        int codigoEst2 = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
+        Estudiante est2 = new Estudiante(nombreEst2, direccionEst2, emailEst2, codigoEst2);
 
         // Agregar estudiantes a los cursos
         curso1.agregarEstudiante(est1);
