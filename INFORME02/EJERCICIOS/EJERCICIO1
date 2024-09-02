@@ -1,1 +1,161 @@
+import java.util.ArrayList;
+import java.util.List;
 
+// AQUI SE CREA LA CLASE abstracta Persona
+abstract class Persona {
+    protected String nombre;
+    protected String direccion;
+    protected String email;
+
+    // Constructor de la clase Persona
+    public Persona(String nombre, String direccion, String email) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.email = email;
+    }
+
+    // Metodo abstracto para mostrar informacion
+    public abstract void mostrarInformacion();
+}
+
+// AQUI SE CREA LA CLASE Estudiante que hereda de Persona
+class Estudiante extends Persona {
+    private int codigoEstudiante;
+
+    // Constructor de la clase Estudiante
+    public Estudiante(String nombre, String direccion, String email, int codigoEstudiante) {
+        super(nombre, direccion, email);
+        this.codigoEstudiante = codigoEstudiante;
+    }
+
+    // Metodo para obtener el codigo del estudiante
+    public int getCodigoEstudiante() {
+        return codigoEstudiante;
+    }
+
+    // Metodo para mostrar la informacion del estudiante
+    @Override
+    public void mostrarInformacion() {
+        System.out.println("Estudiante: " + nombre + ", Código: " + codigoEstudiante + ", Email: " + email);
+    }
+}
+
+// AQUI SE CREA LA CLASE Profesor que hereda de Persona
+class Profesor extends Persona {
+    private String especialidad;
+
+    // Constructor de la clase Profesor
+    public Profesor(String nombre, String direccion, String email, String especialidad) {
+        super(nombre, direccion, email);
+        this.especialidad = especialidad;
+    }
+
+    // Metodo para obtener la especialidad del profesor
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    // Metodo para mostrar la informacion del profesor
+    @Override
+    public void mostrarInformacion() {
+        System.out.println("Profesor: " + nombre + ", Especialidad: " + especialidad + ", Email: " + email);
+    }
+}
+
+// AQUI SE CREA LA CLASE Curso
+class Curso {
+    private String nombreCurso;
+    private Profesor profesor;
+    private List<Estudiante> estudiantes;
+    private final String categoria;
+    private final int maxEstudiantes;
+
+    // Constructor de la clase Curso
+    public Curso(String nombreCurso, Profesor profesor, String categoria, int maxEstudiantes) {
+        this.nombreCurso = nombreCurso;
+        this.profesor = profesor;
+        this.categoria = categoria;
+        this.maxEstudiantes = maxEstudiantes;
+        this.estudiantes = new ArrayList<>();
+    }
+
+    // Metodo para obtener el nombre del curso
+    public String getNombreCurso() {
+        return nombreCurso;
+    }
+
+    // Metodo para obtener la categoria del curso
+    public String getCategoria() {
+        return categoria;
+    }
+
+    // Metodo para agregar un estudiante al curso
+    public boolean agregarEstudiante(Estudiante estudiante) {
+        if (estudiantes.size() < maxEstudiantes) {
+            estudiantes.add(estudiante);
+            return true;
+        }
+        return false;
+    }
+
+    // Metodo para mostrar la informacion del curso
+    public void mostrarInformacion() {
+        System.out.println("Curso: " + nombreCurso + ", Categoría: " + categoria + ", Profesor: " + profesor.nombre);
+        System.out.println("Estudiantes inscritos:");
+        for (Estudiante estudiante : estudiantes) {
+            System.out.println("- " + estudiante.nombre);
+        }
+    }
+}
+
+// AQUI SE CREA LA CLASE SistemaGestion
+class SistemaGestion {
+    private List<Curso> cursos;
+
+    // Constructor de la clase SistemaGestion
+    public SistemaGestion() {
+        this.cursos = new ArrayList<>();
+    }
+
+    // Metodo para agregar un curso al sistema
+    public void agregarCurso(Curso curso) {
+        cursos.add(curso);
+    }
+
+    // Metodo para mostrar todos los cursos del sistema
+    public void mostrarCursos() {
+        for (Curso curso : cursos) {
+            curso.mostrarInformacion();
+        }
+    }
+}
+
+// Clase principal para probar el sistema
+public class Main {
+    public static void main(String[] args) {
+        // Crear profesores
+        Profesor prof1 = new Profesor("Dr. Juan Pérez", "Calle 123", "jperez@universidad.edu", "Matemáticas");
+        Profesor prof2 = new Profesor("Dra. Ana Gómez", "Calle 456", "agomez@universidad.edu", "Programación");
+
+        // Crear cursos
+        Curso curso1 = new Curso("Cálculo I", prof1, "Matemáticas", 30);
+        Curso curso2 = new Curso("Programación en Java", prof2, "Programación", 25);
+
+        // Crear estudiantes
+        Estudiante est1 = new Estudiante("Carlos López", "Avenida 789", "clopez@estudiantes.edu", 1001);
+        Estudiante est2 = new Estudiante("María Fernández", "Avenida 101", "mfernandez@estudiantes.edu", 1002);
+
+        // Agregar estudiantes a los cursos
+        curso1.agregarEstudiante(est1);
+        curso1.agregarEstudiante(est2);
+        curso2.agregarEstudiante(est1);
+
+        // Crear el sistema de gestion y agregar cursos
+        SistemaGestion sistema = new SistemaGestion();
+        sistema.agregarCurso(curso1);
+        sistema.agregarCurso(curso2);
+
+        // Mostrar los cursos del sistema
+        sistema.mostrarCursos();
+    }
+}
