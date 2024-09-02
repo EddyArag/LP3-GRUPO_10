@@ -1,1 +1,67 @@
+a) Modificaciones en el código de la clase Contador:
+ a.1: Cambiar acumulador += valor por this.acumulador += valor: No se puede. acumulador es un atributo estático, y this se refiere al   objeto actual, no a la clase. Esto causaría un error de compilación.
+ a.2: Cambiar acumulador += valor por Contador.acumulador += valor: Se puede. Esto es correcto ya que se está accediendo al atributo estático de la clase de forma explícita.
+ a.3: Cambiar en inc() la instrucción acumulador++: No se puede. La instrucción debe ser acumulador++ y no this.acumulador++, ya que acumulador es estático y no pertenece a una instancia específica.
+b) Valores que imprime el programa ContadorTest:
+Antes de crear los contadores, imprime 0 (valor inicial de acumulador).
+Después de crear c1 y c2, y llamar a inc() dos veces en c1 y una vez en c2, los valores de c1.getValor() y c2.getValor() serán 5 y 11, respectivamente.
+El acumulador final será 16 (3 + 10 + 2 + 1).
+c) Cambio de static int acumulador = 0 a private static int acumulador = 0:
+No aparece ningún error. La variable acumulador sigue siendo accesible a través del método public static int acumulador(), ya que este método es público.
+d) No inicializar acumulador:
+Si no se inicializa, acumulador tendrá un valor predeterminado de 0 (valor por defecto para variables estáticas de tipo int en Java). El funcionamiento del programa no se verá afectado.
+e) Agregar una constante VALOR_INICIAL y un nuevo constructor:
+Se agrega un constructor sin parámetros que inicializa valor a VALOR_INICIAL. Esto permite crear un Contador sin especificar un valor, utilizando un valor predeterminado.
+f) Instrucción this(Contador.VALOR_INICIAL):
+Esta instrucción llama al constructor que toma un int como parámetro, inicializando valor con VALOR_INICIAL.
+g) Instrucciones adicionales en ContadorTest:
+public class ContadorTest {
+    public static void main(String[] args) {
+        Contador c1 = new Contador(3);
+        Contador c2 = new Contador(10);
+        Contador c3 = new Contador(); // Usando el nuevo constructor
+
+        System.out.println("Valor de c1: " + c1.getValor());
+        System.out.println("Valor de c2: " + c2.getValor());
+        System.out.println("Valor de c3: " + c3.getValor());
+        System.out.println("Acumulador total: " + Contador.acumulador());
+    }
+}
+h) Cambiar this(Contador.VALOR_INICIAL) por new Contador(Contador.VALOR_INICIAL):
+Esto causaría un error de pila (stack overflow) porque intentaría crear un nuevo objeto Contador dentro de su propio constructor, creando un ciclo infinito.
+i) Modificar el constructor:
+Si se cambia el constructor para que Contador.VALOR_INICIAL += valor, esto causaría que la constante VALOR_INICIAL deje de ser constante, lo que es incorrecto y causaría un error de compilación.
+j) Modificaciones en la clase Contador:
+ j.1: Añadir static int nContadores = 0; para contar el número de contadores creados.
+ j.2: Añadir static int ultimoContador = 0; para almacenar el valor del último contador creado.
+ j.3: Incluir incrementos en el constructor y el valor del último contador:
+public class Contador {
+    static int acumulador = 0;
+    static int nContadores = 0;
+    static int ultimoContador = 0;
+    private int valor;
+
+    public Contador(int valor) {
+        this.valor = valor;
+        acumulador += valor;
+        nContadores++;
+        ultimoContador = valor;
+    }
+
+    public Contador() {
+        this(VALOR_INICIAL);
+    }
+
+    // Resto de métodos...
+}
+Ejemplo de uso en ContadorTest:
+public class ContadorTest {
+    public static void main(String[] args) {
+        Contador c1 = new Contador(3);
+        Contador c2 = new Contador(10);
+        Contador c3 = new Contador();
+
+        System.out.println("Número de contadores creados: " + Contador.nContadores);
+        System.out.println("Último contador creado con valor: " + Contador.ultimoContador);
+    }
 
