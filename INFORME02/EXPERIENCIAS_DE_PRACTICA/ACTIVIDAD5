@@ -1,1 +1,108 @@
+// Clase base Cuenta
+abstract class Cuenta {
+    protected int numeroCuenta;
+    protected double saldo;
 
+    public Cuenta(int numeroCuenta, double saldoInicial) {
+        this.numeroCuenta = numeroCuenta;
+        this.saldo = saldoInicial;
+    }
+
+    public void depositar(double monto) {
+        saldo += monto;
+        System.out.println("Depósito de S/." + monto + " realizado. Saldo actual: S/." + saldo);
+    }
+
+    public void retirar(double monto) {
+        if (saldo >= monto) {
+            saldo -= monto;
+            System.out.println("Retiro de S/." + monto + " realizado. Saldo actual: S/." + saldo);
+        } else {
+            System.out.println("Saldo insuficiente para realizar el retiro.");
+        }
+    }
+
+    public double obtenerSaldo() {
+        return saldo;
+    }
+
+    public abstract void consultar(); // Método abstracto a sobrescribir en las subclases
+}
+
+// Subclase CuentaAhorro
+class CuentaAhorro extends Cuenta {
+    private double tasaInteres;
+    private double saldoMinimoMensual;
+
+    public CuentaAhorro(int numeroCuenta, double saldoInicial, double tasaInteres) {
+        super(numeroCuenta, saldoInicial);
+        this.tasaInteres = tasaInteres;
+        this.saldoMinimoMensual = saldoInicial;
+    }
+
+    @Override
+    public void retirar(double monto) {
+        super.retirar(monto);
+        if (saldo < saldoMinimoMensual) {
+            saldoMinimoMensual = saldo;
+        }
+    }
+
+    @Override
+    public void consultar() {
+        double intereses = saldoMinimoMensual * (tasaInteres / 100);
+        depositar(intereses);
+        System.out.println("Intereses de S/." + intereses + " capitalizados. Saldo actual: S/." + saldo);
+        saldoMinimoMensual = saldo; // Restablecer saldo mínimo para el próximo mes
+    }
+}
+
+// Subclase CuentaCorriente
+class CuentaCorriente extends Cuenta {
+    private int retirosGratuitos;
+    private int contadorRetiros;
+    private static final double TARIFA_RETIRO = 3.0;
+
+    public CuentaCorriente(int numeroCuenta, double saldoInicial, int retirosGratuitos) {
+        super(numeroCuenta, saldoInicial);
+        this.retirosGratuitos = retirosGratuitos;
+        this.contadorRetiros = 0;
+    }
+
+    @Override
+    public void retirar(double monto) {
+        if (contadorRetiros < retirosGratuitos) {
+            super.retirar(monto);
+        } else {
+            super.retirar(monto + TARIFA_RETIRO);
+            System.out.println("Se aplicó una tarifa de S/." + TARIFA_RETIRO + " por retiro adicional.");
+        }
+        contadorRetiros++;
+    }
+
+    @Override
+    public void consultar() {
+        contadorRetiros = 0; // Restablecer el contador de retiros
+        System.out.println("Consulta realizada. Saldo actual: S/." + saldo);
+    }
+}
+
+// Clase principal para ejecutar el programa
+public class Main {
+    public static void main(String[] args) {
+        // Crear cuentas de ahorro y corriente
+        Cuenta[] cuentas = new Cuenta[4];
+        cuentas[0] = new CuentaAhorro(1001, 5000, 1.5);
+        cuentas[1] = new CuentaCorriente(2001, 2000, 3);
+        cuentas[2] = new CuentaAhorro(1002, 3000, 1.2);
+        cuentas[3] = new CuentaCorriente(2002, 1500, 3);
+
+        // Ejemplo de operaciones
+        cuentas[0].depositar(500);
+        cuentas[1].retirar(500);
+        cuentas[2].consultar();
+        cuentas[3].retirar(200);
+        cuentas[1].retirar(300);
+        cuentas[1].consultar();
+    }
+}
