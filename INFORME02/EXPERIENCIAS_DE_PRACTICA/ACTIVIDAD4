@@ -1,1 +1,107 @@
+// Clase Persona
+public class Persona {
+    // Atributos privados
+    private int id;
+    private String nombre;
+    private String apellido;
+    private Cuenta cuenta; // Composición con la clase Cuenta
 
+    // Constructor que inicializa los atributos
+    public Persona(int id, String nombre, String apellido, int numeroCuenta, double saldo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.cuenta = new Cuenta(numeroCuenta, saldo); // Se crea un objeto de la clase Cuenta
+    }
+
+    // Getters y setters para los atributos
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    // Método toString para representar el objeto como cadena
+    @Override
+    public String toString() {
+        return "Persona [ID=" + id + ", Nombre=" + nombre + " " + apellido + ", " + cuenta.toString() + "]";
+    }
+}
+
+// Clase Cuenta
+class Cuenta {
+    // Atributos privados
+    private int numero;
+    private double saldo;
+
+    // Constructor que inicializa los atributos
+    public Cuenta(int numero, double saldo) {
+        this.numero = numero;
+        this.saldo = saldo;
+    }
+
+    // Constructor sobrecargado para inicializar sin saldo
+    public Cuenta(int numero) {
+        this(numero, 0.0); // Llama al constructor principal con saldo cero
+    }
+
+    // Getters y setters para los atributos
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    // Método toString para representar el objeto como cadena
+    @Override
+    public String toString() {
+        return "Cuenta [Número de Cuenta=" + numero + ", Saldo=" + saldo + "]";
+    }
+}
+
+// Clase principal para probar la implementación
+class Main {
+    public static void main(String[] args) {
+        // Crear una persona con una cuenta
+        Persona persona1 = new Persona(1, "Juan", "Perez", 12345, 1000.0);
+
+        // Mostrar la información de la persona y su cuenta
+        System.out.println(persona1.toString());
+    }
+}
