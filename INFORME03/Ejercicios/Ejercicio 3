@@ -1,1 +1,47 @@
+package transporte;
+
+public interface Acelerable {
+    void acelerar();
+}
+
+***************************************************************************
+
+package transporte;
+
+public class Coche implements Acelerable {
+    @Override
+    public void acelerar() {
+        System.out.println("El coche está acelerando usando el motor.");
+    }
+}
+
+**************************************************************************
+
+package transporte;
+
+public class Bicicleta implements Acelerable {
+    @Override
+    public void acelerar() {
+        System.out.println("La bicicleta está acelerando pedaleando.");
+    }
+}
+
+***************************************************************************
+
+
+
+
+package main;
+
+import transporte.Acelerable;
+import transporte.Bicicleta;
+import transporte.Coche;
+
+public class Main {
+    public static void main(String[] args) {
+        Acelerable coche = new Coche();
+        Acelerable bicicleta = new Bicicleta();
+
+        coche.acelerar();
+        bicicleta.acelerar();
 
