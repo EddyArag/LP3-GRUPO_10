@@ -1,1 +1,20 @@
+package practica04;
 
+interface ServicioLimpieza {
+    void solicitarLimpieza();
+}
+
+interface ServicioComida {
+    void solicitarComida();
+}
+
+interface ServicioLavanderia {
+    void solicitarLavanderia();
+}
+
+class HabitacionEstandar implements ServicioLimpieza {
+    @Override
+    public void solicitarLimpieza() {
+        // Implementación de solicitud de limpieza
+    }
+}
