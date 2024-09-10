@@ -1,1 +1,112 @@
+package geometria;
+
+public interface Dibujable {
+    void dibujar();
+}
+
+*****************************************************************************
+
+package geometria;
+
+public class Circulo implements Dibujable {
+    @Override
+    public void dibujar() {
+        System.out.println("Dibujando un círculo.");
+    }
+}
+
+**************************************************************
+
+package geometria;
+
+public class Rectangulo implements Dibujable {
+    @Override
+    public void dibujar() {
+        System.out.println("Dibujando un rectángulo.");
+    }
+}
+
+*********************************************************************
+
+package geometria;
+
+public class Triangulo implements Dibujable {
+    @Override
+    public void dibujar() {
+        System.out.println("Dibujando un triángulo.");
+    }
+}
+
+**********************************************************************
+
+package transporte;
+
+public interface Acelerable {
+    void acelerar();
+}
+
+*********************************************************************
+
+package transporte;
+
+public class Coche implements Acelerable {
+    @Override
+    public void acelerar() {
+        System.out.println("El coche está acelerando.");
+    }
+}
+
+***********************************************************************
+
+package transporte;
+
+public class Bicicleta implements Acelerable {
+    @Override
+    public void acelerar() {
+        System.out.println("La bicicleta está acelerando.");
+    }
+}
+
+*******************************************************************
+
+package transporte;
+
+public class Camion implements Acelerable {
+    @Override
+    public void acelerar() {
+        System.out.println("El camión está acelerando.");
+    }
+}
+
+**********************************************************************
+package main;
+
+import geometria.Circulo;
+import geometria.Rectangulo;
+import geometria.Triangulo;
+import transporte.Coche;
+import transporte.Bicicleta;
+import transporte.Camion;
+
+public class Main {
+    public static void main(String[] args) {
+        // Dibujar formas
+        Circulo circulo = new Circulo();
+        Rectangulo rectangulo = new Rectangulo();
+        Triangulo triangulo = new Triangulo();
+
+        circulo.dibujar();
+        rectangulo.dibujar();
+        triangulo.dibujar();
+
+        // Acelerar vehículos
+        Coche coche = new Coche();
+        Bicicleta bicicleta = new Bicicleta();
+        Camion camion = new Camion();
+
+        coche.acelerar();
+        bicicleta.acelerar();
+        camion.acelerar();
+    }
+}
 
