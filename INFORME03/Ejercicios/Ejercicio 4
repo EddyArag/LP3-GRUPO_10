@@ -1,1 +1,60 @@
+package dispositivos;
+
+public interface ImpresoraBasica {
+    void imprimir();
+}
+
+***************************************************************************
+
+package dispositivos;
+
+public interface ImpresoraMultifuncional extends ImpresoraBasica {
+    void escanear();
+}
+
+**************************************************************************
+
+package dispositivos;
+
+public class Impresora implements ImpresoraBasica {
+    @Override
+    public void imprimir() {
+        System.out.println("Imprimiendo desde una impresora básica.");
+    }
+}
+
+
+**********************************************************************
+
+package dispositivos;
+
+public class ImpresoraMultifuncionalImpl implements ImpresoraMultifuncional {
+    @Override
+    public void imprimir() {
+        System.out.println("Imprimiendo desde una impresora multifuncional.");
+    }
+
+    @Override
+    public void escanear() {
+        System.out.println("Escaneando un documento.");
+    }
+}
+
+**********************************************************************
+
+package main;
+
+import dispositivos.Impresora;
+import dispositivos.ImpresoraMultifuncionalImpl;
+
+public class Main {
+    public static void main(String[] args) {
+        Impresora impresoraBasica = new Impresora();
+        impresoraBasica.imprimir();
+
+        ImpresoraMultifuncionalImpl impresoraMulti = new ImpresoraMultifuncionalImpl();
+        impresoraMulti.imprimir();
+        impresoraMulti.escanear();
+    }
+}
 
