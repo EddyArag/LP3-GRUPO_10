@@ -1,5 +1,3 @@
-package main;
-
 import practica01.*;
 import practica02.*;
 import practica03.*;
