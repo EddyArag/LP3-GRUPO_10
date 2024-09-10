@@ -1,1 +1,23 @@
+package practica03;
 
+public class Habitacion {
+    public void asignarCliente(Cliente cliente) {
+        // Asignación de cliente
+    }
+}
+
+class HabitacionIndividual extends Habitacion {
+    @Override
+    public void asignarCliente(Cliente cliente) {
+        // Verificación específica para habitaciones individuales
+        super.asignarCliente(cliente);
+    }
+}
+
+class HabitacionDoble extends Habitacion {
+    @Override
+    public void asignarCliente(Cliente cliente) {
+        // Verificación específica para habitaciones dobles
+        super.asignarCliente(cliente);
+    }
+}
