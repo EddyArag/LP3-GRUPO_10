@@ -1,1 +1,29 @@
+package practica02;
 
+interface PoliticaCancelacion {
+    boolean puedeCancelar(Reserva reserva);
+}
+
+class PoliticaCancelacionFlexible implements PoliticaCancelacion {
+    @Override
+    public boolean puedeCancelar(Reserva reserva) {
+        // Lógica para cancelación flexible
+        return true; // Placeholder
+    }
+}
+
+class PoliticaCancelacionModerada implements PoliticaCancelacion {
+    @Override
+    public boolean puedeCancelar(Reserva reserva) {
+        // Lógica para cancelación moderada
+        return true; // Placeholder
+    }
+}
+
+class PoliticaCancelacionEstricta implements PoliticaCancelacion {
+    @Override
+    public boolean puedeCancelar(Reserva reserva) {
+        // Lógica para cancelación estricta
+        return false; // Placeholder
+    }
+}
