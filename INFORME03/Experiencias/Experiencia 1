@@ -1,1 +1,35 @@
+package practica01;
 
+public class Habitacion {
+    private String tipo;
+    private double precio;
+    private boolean disponible;
+
+    private GestorDisponibilidadHabitacion gestorDisponibilidad;
+
+    public Habitacion(String tipo, double precio) {
+        this.tipo = tipo;
+        this.precio = precio;
+        this.disponible = true;
+        this.gestorDisponibilidad = new GestorDisponibilidadHabitacion();
+    }
+
+    public boolean verificarDisponibilidad(String fechaInicio, String fechaFin) {
+        return gestorDisponibilidad.verificarDisponibilidad(this, fechaInicio, fechaFin);
+    }
+
+    public void marcarReservada() {
+        this.disponible = false;
+    }
+
+    public void marcarDisponible() {
+        this.disponible = true;
+    }
+}
+
+class GestorDisponibilidadHabitacion {
+    public boolean verificarDisponibilidad(Habitacion habitacion, String fechaInicio, String fechaFin) {
+        // Implementación de verificación
+        return true; // Placeholder
+    }
+}
