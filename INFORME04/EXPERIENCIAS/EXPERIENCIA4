@@ -1,1 +1,23 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+class HistorialVacioException extends Exception {
+    public HistorialVacioException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class ReporteTransacciones {
+    public void generarReporte(CuentaBancaria cuenta) throws HistorialVacioException, IOException {
+        if (cuenta.consultarSaldo() == 0) {
+            throw new HistorialVacioException("Error: La cuenta no tiene transacciones.");
+        }
+        try (FileWriter writer = new FileWriter("reporte.txt")) {
+            writer.write("Número de cuenta: " + cuenta.numeroCuenta + "\n");
+            writer.write("Titular: " + cuenta.titular + "\n");
+            writer.write("Saldo: " + cuenta.consultarSaldo() + "\n");
+        }
+    }
+}
 
