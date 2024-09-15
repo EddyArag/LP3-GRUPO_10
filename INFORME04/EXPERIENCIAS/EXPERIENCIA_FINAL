@@ -1,1 +1,202 @@
+import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+class SaldoInsuficienteException extends Exception {
+    public SaldoInsuficienteException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class CuentaNoEncontradaException extends Exception {
+    public CuentaNoEncontradaException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class SaldoNoCeroException extends Exception {
+    public SaldoNoCeroException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class LimiteCreditoExcedidoException extends Exception {
+    public LimiteCreditoExcedidoException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class HistorialVacioException extends Exception {
+    public HistorialVacioException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+// Clase CuentaBancaria
+class CuentaBancaria {
+    protected String numeroCuenta;
+    protected String titular;
+    protected double saldo;
+
+    // Constructor con validación
+    public CuentaBancaria(String numeroCuenta, String titular, double saldoInicial) {
+        if (saldoInicial < 0) {
+            throw new IllegalArgumentException("Error: El saldo inicial no puede ser negativo.");
+        }
+        this.numeroCuenta = numeroCuenta;
+        this.titular = titular;
+        this.saldo = saldoInicial;
+    }
+
+    // Método para depositar dinero
+    public void depositar(double monto) {
+        if (monto <= 0) {
+            throw new IllegalArgumentException("Error: El monto a depositar debe ser positivo.");
+        }
+        saldo += monto;
+    }
+
+    // Método para retirar dinero
+    public void retirar(double monto) throws SaldoInsuficienteException {
+        if (monto <= 0) {
+            throw new IllegalArgumentException("Error: El monto a retirar debe ser positivo.");
+        }
+        if (monto > saldo) {
+            throw new SaldoInsuficienteException("Error: Saldo insuficiente para realizar el retiro.");
+        }
+        saldo -= monto;
+    }
+
+    // Método para consultar el saldo
+    public double consultarSaldo() {
+        return saldo;
+    }
+}
+
+// Clase extendida para la experiencia 2
+class CuentaBancariaConExcepciones extends CuentaBancaria {
+    public CuentaBancariaConExcepciones(String numeroCuenta, String titular, double saldoInicial) {
+        super(numeroCuenta, titular, saldoInicial);
+    }
+
+    // Método para transferir entre cuentas
+    public void transferir(CuentaBancaria destino, double monto) throws SaldoInsuficienteException, CuentaNoEncontradaException {
+        if (destino == null) {
+            throw new CuentaNoEncontradaException("Error: Cuenta destino no encontrada.");
+        }
+        retirar(monto);
+        destino.depositar(monto);
+    }
+
+    // Método para cerrar la cuenta
+    public void cerrarCuenta() throws SaldoNoCeroException {
+        if (consultarSaldo() != 0) {
+            throw new SaldoNoCeroException("Error: No se puede cerrar la cuenta porque el saldo no es cero.");
+        }
+        System.out.println("Cuenta cerrada con éxito.");
+    }
+}
+
+// Clase CuentaCredito para la experiencia 3
+class CuentaCredito extends CuentaBancariaConExcepciones {
+    private double limiteCredito;
+
+    public CuentaCredito(String numeroCuenta, String titular, double saldoInicial, double limiteCredito) {
+        super(numeroCuenta, titular, saldoInicial);
+        this.limiteCredito = limiteCredito;
+    }
+
+    @Override
+    public void retirar(double monto) throws SaldoInsuficienteException, LimiteCreditoExcedidoException {
+        if (monto <= 0) {
+            throw new IllegalArgumentException("Error: El monto a retirar debe ser positivo.");
+        }
+        if (monto > (consultarSaldo() + limiteCredito)) {
+            throw new LimiteCreditoExcedidoException("Error: Límite de crédito excedido.");
+        }
+        super.retirar(monto > consultarSaldo() ? consultarSaldo() : monto);
+    }
+}
+
+// Clase para generar reportes y manejar archivos
+class ReporteTransacciones {
+    public void generarReporte(CuentaBancaria cuenta) throws HistorialVacioException, IOException {
+        if (cuenta.consultarSaldo() == 0) {
+            throw new HistorialVacioException("Error: La cuenta no tiene transacciones.");
+        }
+        try (FileWriter writer = new FileWriter("reporte.txt")) {
+            writer.write("Número de cuenta: " + cuenta.numeroCuenta + "\n");
+            writer.write("Titular: " + cuenta.titular + "\n");
+            writer.write("Saldo: " + cuenta.consultarSaldo() + "\n");
+        }
+    }
+}
+
+// Main para la experiencia 1
+public class MainExperiencia1 {
+    public static void main(String[] args) {
+        try {
+            CuentaBancaria cuenta = new CuentaBancaria("001", "Alex", 1000);
+            System.out.println("Saldo inicial: " + cuenta.consultarSaldo());
+            
+            cuenta.depositar(500);
+            System.out.println("Saldo después de depósito: " + cuenta.consultarSaldo());
+            
+            cuenta.retirar(2000);  // Esto lanzará SaldoInsuficienteException
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (SaldoInsuficienteException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+// Main para la experiencia 2
+public class MainExperiencia2 {
+    public static void main(String[] args) {
+        try {
+            CuentaBancariaConExcepciones cuenta1 = new CuentaBancariaConExcepciones("002", "Sara", 500);
+            CuentaBancariaConExcepciones cuenta2 = new CuentaBancariaConExcepciones("003", "Luis", 300);
+            
+            cuenta1.transferir(cuenta2, 200);
+            System.out.println("Saldo cuenta 1: " + cuenta1.consultarSaldo());
+            System.out.println("Saldo cuenta 2: " + cuenta2.consultarSaldo());
+            
+            cuenta1.cerrarCuenta();  // Esto lanzará SaldoNoCeroException
+        } catch (SaldoInsuficienteException | CuentaNoEncontradaException | SaldoNoCeroException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+// Main para la experiencia 3
+public class MainExperiencia3 {
+    public static void main(String[] args) {
+        try {
+            CuentaCredito cuentaCredito = new CuentaCredito("004", "María", 0, 500);
+            
+            cuentaCredito.retirar(300);  // Operación dentro del límite de crédito
+            System.out.println("Saldo después de retiro: " + cuentaCredito.consultarSaldo());
+            
+            cuentaCredito.retirar(600);  // Esto lanzará LimiteCreditoExcedidoException
+        } catch (SaldoInsuficienteException | LimiteCreditoExcedidoException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+// Main para la experiencia 4
+public class MainExperiencia4 {
+    public static void main(String[] args) {
+        try {
+            CuentaBancaria cuenta = new CuentaBancaria("005", "Carlos", 0);
+            ReporteTransacciones reporte = new ReporteTransacciones();
+            reporte.generarReporte(cuenta);  // Esto lanzará HistorialVacioException
+        } catch (HistorialVacioException | IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
 
