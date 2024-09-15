@@ -1,1 +1,40 @@
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+
+class RegistroEstudiantes {
+    private ArrayList<String> estudiantes = new ArrayList<>();
+
+    public void agregarEstudiante(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("Error: El nombre no puede ser nulo o vacío.");
+        }
+        estudiantes.add(nombre);
+    }
+
+    public String buscarEstudiante(String nombre) {
+        for (String estudiante : estudiantes) {
+            if (estudiante.equalsIgnoreCase(nombre)) {
+                return estudiante;
+            }
+        }
+        throw new NoSuchElementException("Error: Estudiante no encontrado.");
+    }
+}
+
+public class MainRegistroEstudiantes {
+    public static void main(String[] args) {
+        RegistroEstudiantes registro = new RegistroEstudiantes();
+
+        try {
+            registro.agregarEstudiante("Juan");
+            registro.agregarEstudiante("Ana");
+            System.out.println("Estudiante encontrado: " + registro.buscarEstudiante("Juan"));
+            System.out.println("Estudiante encontrado: " + registro.buscarEstudiante("Pedro"));  
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (NoSuchElementException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
 
