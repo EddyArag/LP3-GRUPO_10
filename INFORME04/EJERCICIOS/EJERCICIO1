@@ -51,7 +51,7 @@ public class Main {
     public static void main(String[] args) {
         LeerEntrada entrada = new LeerEntrada();
         boolean continuar = true;
-
+        System.out.println("X o x Para salir del codigo.");
         while (continuar) {
             try {
                 entrada.getChar();
@@ -69,4 +69,3 @@ public class Main {
         }
     }
 }
-
