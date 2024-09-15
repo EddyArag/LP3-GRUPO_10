@@ -1,1 +1,26 @@
+class LimiteCreditoExcedidoException extends Exception {
+    public LimiteCreditoExcedidoException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class CuentaCredito extends CuentaBancariaConExcepciones {
+    private double limiteCredito;
+
+    public CuentaCredito(String numeroCuenta, String titular, double saldoInicial, double limiteCredito) {
+        super(numeroCuenta, titular, saldoInicial);
+        this.limiteCredito = limiteCredito;
+    }
+
+    @Override
+    public void retirar(double monto) throws SaldoInsuficienteException, LimiteCreditoExcedidoException {
+        if (monto <= 0) {
+            throw new IllegalArgumentException("Error: El monto a retirar debe ser positivo.");
+        }
+        if (monto > (consultarSaldo() + limiteCredito)) {
+            throw new LimiteCreditoExcedidoException("Error: Límite de crédito excedido.");
+        }
+        super.retirar(monto > consultarSaldo() ? consultarSaldo() : monto);
+    }
+}
 
