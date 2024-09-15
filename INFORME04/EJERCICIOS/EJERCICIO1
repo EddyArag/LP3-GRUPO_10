@@ -1,1 +1,72 @@
+import java.util.Scanner;
+
+class ExcepcionVocal extends Exception {
+    public ExcepcionVocal(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class ExcepcionNumero extends Exception {
+    public ExcepcionNumero(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class ExcepcionBlanco extends Exception {
+    public ExcepcionBlanco(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class ExcepcionSalida extends Exception {
+    public ExcepcionSalida(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class LeerEntrada {
+    private char caracter;
+
+    public char getChar() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Ingresa un carácter: ");
+        caracter = scanner.next().charAt(0);
+        return caracter;
+    }
+
+    public void procesar() throws ExcepcionVocal, ExcepcionNumero, ExcepcionBlanco, ExcepcionSalida {
+        if (Character.isDigit(caracter)) {
+            throw new ExcepcionNumero("El carácter es un número.");
+        } else if (Character.isWhitespace(caracter)) {
+            throw new ExcepcionBlanco("El carácter es un espacio en blanco.");
+        } else if ("aeiouAEIOU".indexOf(caracter) != -1) {
+            throw new ExcepcionVocal("El carácter es una vocal.");
+        } else if (caracter == 'X' || caracter == 'x') {
+            throw new ExcepcionSalida("Carácter de salida detectado. Finalizando...");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        LeerEntrada entrada = new LeerEntrada();
+        boolean continuar = true;
+
+        while (continuar) {
+            try {
+                entrada.getChar();
+                entrada.procesar();
+            } catch (ExcepcionVocal e) {
+                System.out.println(e.getMessage());
+            } catch (ExcepcionNumero e) {
+                System.out.println(e.getMessage());
+            } catch (ExcepcionBlanco e) {
+                System.out.println(e.getMessage());
+            } catch (ExcepcionSalida e) {
+                System.out.println(e.getMessage());
+                continuar = false;
+            }
+        }
+    }
+}
 
