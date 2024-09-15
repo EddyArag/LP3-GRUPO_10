@@ -1,1 +1,33 @@
+class CuentaNoEncontradaException extends Exception {
+    public CuentaNoEncontradaException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class SaldoNoCeroException extends Exception {
+    public SaldoNoCeroException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+class CuentaBancariaConExcepciones extends CuentaBancaria {
+    public CuentaBancariaConExcepciones(String numeroCuenta, String titular, double saldoInicial) {
+        super(numeroCuenta, titular, saldoInicial);
+    }
+
+    public void transferir(CuentaBancaria destino, double monto) throws SaldoInsuficienteException, CuentaNoEncontradaException {
+        if (destino == null) {
+            throw new CuentaNoEncontradaException("Error: Cuenta destino no encontrada.");
+        }
+        retirar(monto);
+        destino.depositar(monto);
+    }
+
+    public void cerrarCuenta() throws SaldoNoCeroException {
+        if (consultarSaldo() != 0) {
+            throw new SaldoNoCeroException("Error: No se puede cerrar la cuenta porque el saldo no es cero.");
+        }
+        System.out.println("Cuenta cerrada con éxito.");
+    }
+}
 
