@@ -1,1 +1,30 @@
+class Numero {
+    private double valor;
+
+    public Numero(double valor) {
+        setValor(valor);
+    }
+
+    public void setValor(double valor) {
+        if (valor < 0) {
+            throw new IllegalArgumentException("Error: No se permite un valor negativo.");
+        }
+        this.valor = valor;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+}
+
+public class MainNumero {
+    public static void main(String[] args) {
+        try {
+            Numero numero = new Numero(-10);
+            System.out.println("Valor: " + numero.getValor());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
 
