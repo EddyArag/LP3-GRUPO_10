@@ -1,39 +1,41 @@
 import java.util.Scanner;
 
 public class IgualGenerico {
-    // Método genérico para comparar dos elementos
+    // Método genérico para comparar dos objetos
     public static <T> boolean esIgualA(T obj1, T obj2) {
+        // Si alguno de los objetos es nulo, automáticamente devolvemos false
         if (obj1 == null || obj2 == null) {
             return false;
         }
+        // Si ambos objetos son no nulos, los comparamos con equals
         return obj1.equals(obj2);
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Ingresar enteros
+        // Pedimos al usuario que ingrese dos enteros
         System.out.print("Ingresa el primer entero: ");
-        Integer a = scanner.nextInt();
+        Integer a = scanner.nextInt();  // Primer entero
 
         System.out.print("Ingresa el segundo entero: ");
-        Integer b = scanner.nextInt();
+        Integer b = scanner.nextInt();  // Segundo entero
 
-        // Comparar enteros
+        // Comparamos los enteros y mostramos si son iguales
         System.out.println("Comparando enteros: " + esIgualA(a, b));
 
-        // Ingresar cadenas
-        scanner.nextLine();
+        // Pedimos al usuario que ingrese dos cadenas
+        scanner.nextLine();  // Limpiamos el buffer
         System.out.print("Ingresa la primera cadena: ");
-        String s1 = scanner.nextLine();
+        String s1 = scanner.nextLine();  // Primera cadena
 
         System.out.print("Ingresa la segunda cadena: ");
-        String s2 = scanner.nextLine();
+        String s2 = scanner.nextLine();  // Segunda cadena
 
-        // Comparar cadenas
+        // Comparamos las cadenas y mostramos si son iguales
         System.out.println("Comparando cadenas: " + esIgualA(s1, s2));
 
-        // Comparar null
-        System.out.println("Comparando null con la segunda cadena: " + esIgualA(null, null));
+        // Comparamos dos objetos null para ver qué pasa
+        System.out.println("Comparando null con null: " + esIgualA(null, null));
     }
 }
