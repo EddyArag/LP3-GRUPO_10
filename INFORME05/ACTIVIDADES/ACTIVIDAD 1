@@ -1,6 +1,7 @@
 class InvalidSubscriptException extends Exception {
+    // Constructor que llama al constructor de Exception con un mensaje
     public InvalidSubscriptException(String mensaje) {
-        super(mensaje);
+        super(mensaje);  // Llama al constructor de la clase padre (Exception)
     }
 }
 
@@ -8,55 +9,63 @@ public class Main {
 
     // Método genérico para imprimir todo el arreglo
     public static <E> void imprimirArreglo(E[] arregloEntrada) {
-        // Muestra los elementos del arreglo
+        // Vamos a recorrer el arreglo y mostrar cada elemento
         for (E elemento : arregloEntrada) {
-            System.out.printf("%s ", elemento);
+            System.out.printf("%s ", elemento);  // Imprime cada elemento seguido de un espacio
         }
-        System.out.println();
+        System.out.println();  // Salto de línea al final
     }
 
-    // Método sobrecargado para imprimir un rango específico del arreglo
+    // Método sobrecargado para imprimir una parte del arreglo, un rango
     public static <E> int imprimirArreglo(E[] arregloEntrada, int subindiceInferior, int subindiceSuperior) 
             throws InvalidSubscriptException {
-        // Validación de los índices
+        // Verificamos que los índices sean válidos
         if (subindiceInferior < 0 || subindiceSuperior >= arregloEntrada.length || subindiceSuperior < subindiceInferior) {
+            // Si los índices son incorrectos, lanzamos una excepción
             throw new InvalidSubscriptException("Subíndice inválido");
         }
 
-        int elementosImpresos = 0;
-        // Imprimir los elementos en el rango especificado
+        int elementosImpresos = 0;  // Contador para llevar la cuenta de cuántos elementos hemos impreso
+        // Imprimir los elementos dentro del rango
         for (int i = subindiceInferior; i <= subindiceSuperior; i++) {
-            System.out.printf("%s ", arregloEntrada[i]);
-            elementosImpresos++;
+            System.out.printf("%s ", arregloEntrada[i]);  // Imprimimos cada elemento en el rango
+            elementosImpresos++;  // Incrementamos el contador de elementos
         }
-        System.out.println();
-        return elementosImpresos;
+        System.out.println();  // Salto de línea al final
+        return elementosImpresos;  // Devolvemos la cantidad de elementos que imprimimos
     }
 
     public static void main(String[] args) {
-        // Crea arreglos de objetos Integer, Double y Character
+        // Declaramos y rellenamos los arreglos con diferentes tipos de datos
         Integer[] arregloInteger = {1, 2, 3, 4, 5, 6};
         Double[] arregloDouble = {1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7};
         Character[] arregloCharacter = {'A', 'P', 'R', 'U','E','B','E','M','E'};
 
-        // Imprimir arreglos completos
+        // Imprimimos el arreglo completo de enteros
         System.out.println("El arreglo arregloInteger contiene:");
-        imprimirArreglo(arregloInteger); // pasa un arreglo Integer
+        imprimirArreglo(arregloInteger); // Llamamos a la función que imprime todo el arreglo
+        
+        // Imprimimos el arreglo completo de decimales
         System.out.println("\nEl arreglo arregloDouble contiene:");
-        imprimirArreglo(arregloDouble); // pasa un arreglo Double
+        imprimirArreglo(arregloDouble); // Lo mismo para el arreglo de Doubles
+        
+        // Imprimimos el arreglo completo de caracteres
         System.out.println("\nEl arreglo arregloCharacter contiene:");
-        imprimirArreglo(arregloCharacter); // pasa un arreglo Character
+        imprimirArreglo(arregloCharacter); // Y ahora con el arreglo de caracteres
 
-        // Pruebas del método sobrecargado
+        // Ahora hacemos pruebas con el método sobrecargado (para imprimir solo una parte)
         try {
+            // Imprimimos un subarreglo de enteros (del índice 1 al 4)
             System.out.println("\nImprimir subarreglo de arregloInteger desde el índice 1 hasta el 4:");
-            int cantidad = imprimirArreglo(arregloInteger, 1, 4);
+            int cantidad = imprimirArreglo(arregloInteger, 1, 4);  // Invocamos el método sobrecargado
             System.out.println("Cantidad de elementos impresos: " + cantidad);
 
+            // Intentamos usar índices inválidos para ver si salta la excepción
             System.out.println("\nIntentar imprimir con índices inválidos:");
-            imprimirArreglo(arregloInteger, 4, 1); // Esto lanzará la excepción
+            imprimirArreglo(arregloInteger, 4, 1);  // Aquí sabemos que lanzará la excepción
         } catch (InvalidSubscriptException e) {
-            System.out.println(e.getMessage());
+            // Capturamos la excepción y mostramos el mensaje
+            System.out.println(e.getMessage());  // Mostramos el error que ocurre
         }
     }
 }
