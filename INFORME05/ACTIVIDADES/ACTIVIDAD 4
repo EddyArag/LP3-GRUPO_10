@@ -1,51 +1,55 @@
 public class Pila<E> {
-    private final int tamaño;
-    private int superior;
-    private E[] elementos;
+    private final int tamaño;  // Este es el tamaño máximo de la pila
+    private int superior;  // Índice que indica el último elemento en la pila
+    private E[] elementos;  // Arreglo donde guardamos los elementos
 
-    // Constructor que inicializa la pila con un tamaño predeterminado
+    // Constructor que crea una pila con tamaño predeterminado (10)
     public Pila() {
-        this(10); // Tamaño predeterminado de la pila
+        this(10);  // Llama al otro constructor y le pasa 10
     }
 
     // Constructor que crea una pila de tamaño especificado
     public Pila(int s) {
-        tamaño = s > 0 ? s : 10; // Establece el tamaño de la pila
-        superior = -1; // Al principio la pila está vacía
-        elementos = (E[]) new Object[Tamaño]; //Arreglo de tipo E
+        tamaño = s > 0 ? s : 10;  // Si el tamaño es válido, lo asignamos, si no, 10 por defecto
+        superior = -1;  // La pila comienza vacía
+        elementos = (E[]) new Object[tamaño];  // Creamos el arreglo genérico
     }
 
-    // Método para agregar un elemento a la pila
+    // Método para agregar un elemento a la pila (push)
     public void push(E valorAMeter) {
-        if (superior == Tamaño - 1) {
-            throw new IllegalStateException("Pila llena");
+        if (superior == tamaño - 1) {
+            throw new IllegalStateException("Pila llena");  // Si la pila está llena, lanzamos una excepción
         }
-        elementos[++superior] = valorAMeter; // Agrega el elemento
+        elementos[++superior] = valorAMeter;  // Añadimos el elemento al tope
     }
 
-    // Método para sacar un elemento de la pila
+    // Método para sacar un elemento de la pila (pop)
     public E pop() {
         if (superior == -1) {
-            throw new IllegalStateException("Pila vacía");
+            throw new IllegalStateException("Pila vacía");  // Si la pila está vacía, lanzamos una excepción
         }
-        return elementos[superior--]; // Elimina y devuelve el último elemento
+        return elementos[superior--];  // Retiramos y devolvemos el último elemento
     }
 
-    // Método para verificar si un elemento está en la pila
+    // Método para ver si un elemento está en la pila
     public boolean contains(E elemento) {
+        // Recorremos la pila de arriba hacia abajo
         for (int i = superior; i >= 0; i--) {
             if (elementos[i].equals(elemento)) {
-                return true;
+                return true;  // Si encontramos el elemento, devolvemos true
             }
         }
-        return false;
+        return false;  // Si no está, devolvemos false
     }
 
     public static void main(String[] args) {
+        // Creamos una pila de enteros con capacidad para 5 elementos
         Pila<Integer> pila = new Pila<>(5);
-        pila.push(10);
-        pila.push(20);
-        pila.push(30);
+        pila.push(10);  // Añadimos 10
+        pila.push(20);  // Añadimos 20
+        pila.push(30);  // Añadimos 30
+        
+        // Verificamos si ciertos elementos están en la pila
         System.out.println("¿La pila contiene 20? " + pila.contains(20)); // true
         System.out.println("¿La pila contiene 40? " + pila.contains(40)); // false
     }
