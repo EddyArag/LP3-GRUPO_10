@@ -1,5 +1,3 @@
-4.-
-
 import java.util.ArrayList;
 
 // La clase genérica ContenedorMain puede manejar pares de dos tipos F (primero) y S (segundo)
