@@ -1,36 +1,35 @@
 public class Main {
-    // Método genérico estático que imprime cualquier par.
+    // Método genérico que puede imprimir cualquier tipo de Par.
     public static <F, S> void imprimirPar(Par<F, S> par) {
-        // Llama al método toString del par para imprimir su contenido.
-        System.out.println(par.toString());
+        // Usamos el método toString del par para mostrarlo en consola.
+        System.out.println(par.toString());  // Llamamos al toString de Par
     }
 
     public static void main(String[] args) {
-        // Crear pares de diferentes tipos (String-Integer, Double-Boolean, Persona-Integer).
+        // Creamos tres pares de diferentes tipos: String-Integer, Double-Boolean, y Persona-Integer.
         Par<String, Integer> par1 = new Par<>("Hola", 1);
         Par<Double, Boolean> par2 = new Par<>(3.14, true);
         Par<Persona, Integer> par3 = new Par<>(new Persona("Juan"), 30);
 
-        // Imprimir los pares usando el método genérico imprimirPar.
-        imprimirPar(par1);
-        imprimirPar(par2);
-        imprimirPar(par3);
+        // Llamamos al método genérico para imprimir cada uno de los pares.
+        imprimirPar(par1);  // Imprime el par de String e Integer
+        imprimirPar(par2);  // Imprime el par de Double y Boolean
+        imprimirPar(par3);  // Imprime el par de Persona e Integer
     }
 }
 
-// Clase auxiliar Persona para crear objetos con nombre.
+// Clase auxiliar para crear objetos Persona.
 class Persona {
-    private String nombre;
+    private String nombre;  // Atributo para el nombre de la persona
 
     // Constructor que inicializa el nombre de la persona.
     public Persona(String nombre) {
         this.nombre = nombre;
     }
 
-    // Sobrescribir el método toString para devolver el nombre de la persona.
+    // Sobreescribimos el método toString para devolver el nombre.
     @Override
     public String toString() {
-        return nombre;
+        return nombre;  // Devuelve el nombre como una cadena
     }
 }
-
