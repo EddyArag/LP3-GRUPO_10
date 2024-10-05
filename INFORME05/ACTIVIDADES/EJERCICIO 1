@@ -1,1 +1,38 @@
+public class Par<F, S> { 
+    // Campos para almacenar el primer y segundo elementos del par.
+    private F primero;
+    private S segundo;
+
+    // Constructor que inicializa los valores de los elementos primero y segundo.
+    public Par(F primero, S segundo) {
+        this.primero = primero;
+        this.segundo = segundo;
+    }
+
+    // Método que retorna el valor del primer elemento.
+    public F getPrimero() {
+        return primero;
+    }
+
+    // Método que asigna un valor al primer elemento.
+    public void setPrimero(F primero) {
+        this.primero = primero;
+    }
+
+    // Método que retorna el valor del segundo elemento.
+    public S getSegundo() {
+        return segundo;
+    }
+
+    // Método que asigna un valor al segundo elemento.
+    public void setSegundo(S segundo) {
+        this.segundo = segundo;
+    }
+
+    // Método sobrescrito toString que devuelve una representación en cadena del par.
+    @Override
+    public String toString() {
+        return "(Primero: " + primero + ", Segundo: " + segundo + ")";
+    }
+}
 
