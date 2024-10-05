@@ -1,98 +1,97 @@
 import java.util.ArrayList;
 
-// La clase genérica ContenedorMain puede manejar pares de dos tipos F (primero) y S (segundo)
+// Clase genérica que puede almacenar pares de dos tipos (F y S)
 public class ContenedorMain<F, S> {
 
-    // ArrayList que almacena pares de tipo Par<F, S>
+    // Usamos un ArrayList para guardar los pares.
     private ArrayList<Par<F, S>> pares;
 
-    // Constructor que inicializa el ArrayList
+    // Constructor que inicializa la lista vacía.
     public ContenedorMain() {
-        pares = new ArrayList<>();
+        pares = new ArrayList<>();  // Iniciamos la lista vacía
     }
 
-    // Método para agregar un nuevo par a la lista
+    // Método para agregar un nuevo par al contenedor.
     public void agregarPar(F primero, S segundo) {
-        pares.add(new Par<>(primero, segundo)); // Se crea y agrega un nuevo Par a la lista
+        // Creamos un nuevo par con los valores dados y lo agregamos a la lista.
+        pares.add(new Par<>(primero, segundo));  // Agregamos el nuevo par a la lista
     }
 
-    // Método para obtener un par de la lista basado en el índice
+    // Método para obtener un par basado en el índice.
     public Par<F, S> obtenerPar(int indice) {
-        // Verifica si el índice está dentro de los límites
+        // Verificamos si el índice es válido.
         if (indice >= 0 && indice < pares.size()) {
-            return pares.get(indice); // Retorna el par si el índice es válido
+            return pares.get(indice);  // Retornamos el par si el índice está bien
         } else {
-            // Lanza una excepción si el índice está fuera de los límites
+            // Lanzamos una excepción si el índice está fuera de los límites.
             throw new IndexOutOfBoundsException("Índice fuera de rango");
         }
     }
 
-    // Método para obtener todos los pares almacenados
+    // Método para obtener todos los pares almacenados.
     public ArrayList<Par<F, S>> obtenerTodosLosPares() {
-        return pares; // Retorna la lista completa de pares
+        return pares;  // Devolvemos la lista completa de pares
     }
 
-    // Método para mostrar todos los pares en la consola
+    // Método para mostrar todos los pares en consola.
     public void mostrarPares() {
-        // Recorre y muestra cada par en la lista
+        // Recorremos la lista de pares e imprimimos cada uno.
         for (Par<F, S> par : pares) {
-            System.out.println(par); // Llama al método toString de Par para mostrar el contenido
+            System.out.println(par);  // Imprimimos el par usando el toString
         }
     }
 
-    // Método principal donde se ejecuta el programa
     public static void main(String[] args) {
-        // Crea una instancia de ContenedorMain que manejará pares de tipo String e Integer
+        // Creamos un contenedor para pares de tipo String e Integer.
         ContenedorMain<String, Integer> contenedor = new ContenedorMain<>();
 
-        // Agrega tres pares a la lista
+        // Agregamos tres pares al contenedor.
         contenedor.agregarPar("Uno", 1);
         contenedor.agregarPar("Dos", 2);
         contenedor.agregarPar("Tres", 3);
 
-        // Obtiene y muestra el par en el índice 1
-        Par<String, Integer> par = contenedor.obtenerPar(1);
-        System.out.println("Par en índice 1: " + par);
+        // Obtenemos e imprimimos el par en el índice 1.
+        Par<String, Integer> par = contenedor.obtenerPar(1);  // Obtenemos el par en el índice 1
+        System.out.println("Par en índice 1: " + par);  // Mostramos el par
 
-        // Muestra todos los pares en la lista
+        // Mostramos todos los pares en el contenedor.
         System.out.println("Todos los pares:");
-        contenedor.mostrarPares();
+        contenedor.mostrarPares();  // Llamamos al método que imprime todos los pares
     }
 }
 
-// Clase Par que representa un par genérico de dos elementos
+// Clase Par que representa un par genérico de dos elementos (F y S)
 class Par<F, S> {
-    // Variables para almacenar el primer y segundo valor del par
+    // Aquí tenemos dos campos: uno para el primer elemento del par y otro para el segundo.
     private F primero;
     private S segundo;
 
-    // Constructor que inicializa ambos valores del par
+    // Constructor que inicializa ambos elementos del par.
     public Par(F primero, S segundo) {
-        this.primero = primero;
-        this.segundo = segundo;
+        this.primero = primero;  // Asignamos el valor al primero
+        this.segundo = segundo;  // Asignamos el valor al segundo
     }
 
-    // Métodos getter y setter para acceder y modificar los valores del par
+    // Métodos para obtener y cambiar los valores de los elementos.
     public F getPrimero() {
-        return primero;
+        return primero;  // Devolvemos el valor del primer elemento
     }
 
     public void setPrimero(F primero) {
-        this.primero = primero;
+        this.primero = primero;  // Asignamos un nuevo valor al primero
     }
 
     public S getSegundo() {
-        return segundo;
+        return segundo;  // Devolvemos el valor del segundo elemento
     }
 
     public void setSegundo(S segundo) {
-        this.segundo = segundo;
+        this.segundo = segundo;  // Asignamos un nuevo valor al segundo
     }
 
-    // Sobrescribe el método toString para una representación legible del par
+    // Sobreescribimos el método toString para una representación legible del par.
     @Override
     public String toString() {
-        return "Par{" + "primero=" + primero + ", segundo=" + segundo + '}';
+        return "Par{" + "primero=" + primero + ", segundo=" + segundo + '}';  // Representación legible del par
     }
 }
-
