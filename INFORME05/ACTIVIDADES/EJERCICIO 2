@@ -1,52 +1,53 @@
 public class Par<F, S> {
-    // Campos para almacenar el primer y segundo elementos del par.
+    // Campos para el primer y segundo valor del par.
     private F primero;
     private S segundo;
 
-    // Constructor que inicializa los valores del primer y segundo elementos.
+    // Constructor que inicializa el par con dos valores.
     public Par(F primero, S segundo) {
-        this.primero = primero;
-        this.segundo = segundo;
+        this.primero = primero;  // Asignamos el valor al primero
+        this.segundo = segundo;  // Asignamos el valor al segundo
     }
 
-    // Métodos getter y setter para los elementos primero y segundo.
+    // Métodos para obtener y cambiar los valores de los elementos.
     public F getPrimero() {
-        return primero;
+        return primero;  // Devuelve el valor del primer elemento
     }
 
     public void setPrimero(F primero) {
-        this.primero = primero;
+        this.primero = primero;  // Asigna un nuevo valor al primer elemento
     }
 
     public S getSegundo() {
-        return segundo;
+        return segundo;  // Devuelve el valor del segundo elemento
     }
 
     public void setSegundo(S segundo) {
-        this.segundo = segundo;
+        this.segundo = segundo;  // Asigna un nuevo valor al segundo elemento
     }
 
-    // Método que compara dos pares y verifica si son iguales.
+    // Método para comparar dos pares y ver si son iguales.
     public boolean esIgual(Par<F, S> otroPar) {
-        // Compara el primer y segundo elemento con el otro par.
+        // Comparamos ambos elementos del par con el otro par.
         return this.primero.equals(otroPar.getPrimero()) && this.segundo.equals(otroPar.getSegundo());
     }
 
-    // Método sobrescrito toString para devolver el par en formato legible.
+    // Método para devolver el par en formato legible.
     @Override
     public String toString() {
+        // Formateamos el par en una cadena.
         return "(Primero: " + primero + ", Segundo: " + segundo + ")";
     }
 
     public static void main(String[] args) {
-        // Crear tres pares de tipo String, Integer.
+        // Creamos tres pares de tipo String e Integer.
         Par<String, Integer> par1 = new Par<>("Hola", 1);
-        Par<String, Integer> par2 = new Par<>("Hola", 1);
-        Par<String, Integer> par3 = new Par<>("Adios", 2);
+        Par<String, Integer> par2 = new Par<>("Hola", 1);  // Este par es igual al par1
+        Par<String, Integer> par3 = new Par<>("Adios", 2);  // Este par es diferente
 
-        // Comparar par1 con par2 y par3, e imprimir los resultados.
-        System.out.println("Par 1 es igual a Par 2: " + par1.esIgual(par2)); // true
-        System.out.println("Par 1 es igual a Par 3: " + par1.esIgual(par3)); // false
+        // Comparamos el par1 con el par2 (deberían ser iguales)
+        System.out.println("Par 1 es igual a Par 2: " + par1.esIgual(par2));  // true
+        // Comparamos el par1 con el par3 (no deberían ser iguales)
+        System.out.println("Par 1 es igual a Par 3: " + par1.esIgual(par3));  // false
     }
 }
-
