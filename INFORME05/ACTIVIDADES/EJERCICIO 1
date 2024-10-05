@@ -1,38 +1,39 @@
 public class Par<F, S> { 
-    // Campos para almacenar el primer y segundo elementos del par.
+    // Aquí tenemos dos campos: uno para el primer elemento del par (F) 
+    // y otro para el segundo (S).
     private F primero;
     private S segundo;
 
-    // Constructor que inicializa los valores de los elementos primero y segundo.
+    // Constructor que toma el primer y segundo elementos y los inicializa.
     public Par(F primero, S segundo) {
-        this.primero = primero;
-        this.segundo = segundo;
+        this.primero = primero;  // Asignamos el primer valor
+        this.segundo = segundo;  // Asignamos el segundo valor
     }
 
-    // Método que retorna el valor del primer elemento.
+    // Método para obtener el primer elemento.
     public F getPrimero() {
-        return primero;
+        return primero;  // Devolvemos el valor del primer elemento
     }
 
-    // Método que asigna un valor al primer elemento.
+    // Método para cambiar el primer elemento.
     public void setPrimero(F primero) {
-        this.primero = primero;
+        this.primero = primero;  // Le damos un nuevo valor al primer elemento
     }
 
-    // Método que retorna el valor del segundo elemento.
+    // Método para obtener el segundo elemento.
     public S getSegundo() {
-        return segundo;
+        return segundo;  // Devolvemos el valor del segundo elemento
     }
 
-    // Método que asigna un valor al segundo elemento.
+    // Método para cambiar el segundo elemento.
     public void setSegundo(S segundo) {
-        this.segundo = segundo;
+        this.segundo = segundo;  // Le damos un nuevo valor al segundo elemento
     }
 
-    // Método sobrescrito toString que devuelve una representación en cadena del par.
+    // Método para devolver el par en formato String.
     @Override
     public String toString() {
+        // Aquí simplemente estamos formando una cadena bonita con los valores del par.
         return "(Primero: " + primero + ", Segundo: " + segundo + ")";
     }
 }
-
