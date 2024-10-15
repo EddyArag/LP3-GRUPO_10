@@ -1,0 +1,18 @@
+// Ahora el pedido incluye tipo y un identificador único
+public class Pedido {
+    private String nombrePlato;
+    private String tipo;
+
+    public Pedido(String nombrePlato, String tipo) {
+        this.nombrePlato = nombrePlato;
+        this.tipo = tipo;
+    }
+
+    public String getNombrePlato() {
+        return nombrePlato;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+}
