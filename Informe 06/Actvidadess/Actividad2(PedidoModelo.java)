@@ -1,0 +1,35 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Esta clase gestiona la lista de pedidos
+public class PedidoModelo {
+    private List<Pedido> pedidos;
+
+    public PedidoModelo() {
+        pedidos = new ArrayList<>();
+    }
+
+    public void agregarPedido(Pedido pedido) {
+        pedidos.add(pedido); // Añade el pedido a la lista
+    }
+
+    public void eliminarPedido(int index) {
+        if (index >= 0 && index < pedidos.size()) {
+            pedidos.remove(index); // Lo sacamos del menú
+        }
+    }
+
+    public Pedido buscarPedido(String nombre) {
+        // Buscamos un plato según su nombre
+        for (Pedido p : pedidos) {
+            if (p.getNombrePlato().equalsIgnoreCase(nombre)) {
+                return p; // ¡Lo encontramos!
+            }
+        }
+        return null; // Si no está, devolvemos nada
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+}
