@@ -163,7 +163,7 @@ public class AppInventario {
                     System.out.println("Introduce la cantidad:");
                     int cantidad = scanner.nextInt();
                     scanner.nextLine(); // Consumir la nueva línea
-                    System.out.println("Introduce el tipo (Electrónica, Ropa, Comida, etc.):");
+                    System.out.println("Introduce el tipo (Arma, Poción, etc.):");
                     String tipo = scanner.nextLine();
                     System.out.println("Introduce la descripción:");
                     String descripcion = scanner.nextLine();
