@@ -1,0 +1,171 @@
+import java.util.ArrayList; // Pa' manejar listas de pedidos
+import java.util.List; // Lo necesitamos pa' definir nuestra lista
+import java.util.Scanner; // Pa' leer lo que el usuario escriba
+
+public class Main {
+    public static void main(String[] args) {
+        // Creando el modelo que guarda los pedidos
+        PedidoModelo modelo = new PedidoModelo(); 
+
+        // Creamos la vista, que muestra y pide datos al usuario
+        PedidoVista vista = new PedidoVista(); 
+
+        // El controlador conecta el modelo y la vista, como el jefe del equipo
+        PedidoControlador controlador = new PedidoControlador(modelo, vista);
+
+        // ¡Arrancamos la aplicación!
+        controlador.iniciar(); 
+    }
+}
+
+// Esta clase se encarga de guardar y manejar la lista de pedidos
+class PedidoModelo {
+    private List<Pedido> pedidos; // Aquí guardamos todos los pedidos
+
+    // Constructor, iniciamos la lista vacía
+    public PedidoModelo() {
+        pedidos = new ArrayList<>(); // Lista lista para recibir pedidos
+    }
+
+    // Agregamos un nuevo pedido a la lista
+    public void agregarPedido(Pedido pedido) {
+        pedidos.add(pedido); // Lo metemos a la lista, fácil
+    }
+
+    // Retornamos todos los pedidos que tenemos guardados
+    public List<Pedido> getPedidos() {
+        return pedidos; // Enviamos la lista completa
+    }
+}
+
+// Aquí está la clase que representa un pedido en sí
+class Pedido {
+    private String nombrePlato; // Nombre del plato
+    private boolean completado; // ¿Ya está servido o no?
+
+    // Constructor, creamos el pedido con un nombre
+    public Pedido(String nombrePlato) {
+        this.nombrePlato = nombrePlato; // Guardamos el nombre
+        this.completado = false; // Por defecto, el plato no está listo
+    }
+
+    // Regresamos el nombre del plato
+    public String getNombrePlato() {
+        return nombrePlato; // Devolviendo el nombre del pedido
+    }
+
+    // Nos dice si el plato ya está completado
+    public boolean isCompletado() {
+        return completado; // Verdadero o falso, ¿lo completamos?
+    }
+
+    // Cambiamos el estado a "completado"
+    public void completar() {
+        this.completado = true; // ¡Pedido listo y servido!
+    }
+}
+
+// La vista es la encargada de interactuar con el usuario
+class PedidoVista {
+    private Scanner scanner; // Pa' leer lo que el usuario ingresa
+
+    // Constructor, inicializamos el scanner
+    public PedidoVista() {
+        scanner = new Scanner(System.in); // Listo pa' recibir datos del user
+    }
+
+    // Pedimos al usuario que ingrese el nombre del plato
+    public String solicitarNombrePlato() {
+        System.out.print("Introduce el nombre del plato: "); // Mostramos mensaje
+        return scanner.nextLine(); // Guardamos lo que escribió
+    }
+
+    // Mostramos los pedidos al usuario
+    public void mostrarPedidos(List<Pedido> pedidos) {
+        if (pedidos.isEmpty()) { // Si la lista está vacía, decimos eso
+            System.out.println("No hay pedidos en la lista.");
+        } else { // Si hay pedidos, los mostramos todos
+            System.out.println("Lista de Pedidos:");
+            for (Pedido pedido : pedidos) { // Recorremos la lista
+                System.out.println("- " + pedido.getNombrePlato() +
+                                   (pedido.isCompletado() ? " (Completado)" : " (Pendiente)")); // Indica si está listo
+            }
+        }
+    }
+
+    // Mostramos el menú de opciones
+    public void mostrarMenu() {
+        System.out.println("\nOpciones:");
+        System.out.println("1. Agregar Pedido"); // Opción para añadir
+        System.out.println("2. Mostrar Pedidos"); // Opción para mostrar
+        System.out.println("3. Salir"); // Opción pa' salir
+    }
+
+    // Pedimos al usuario que seleccione una opción del menú
+    public String solicitarOpcion() {
+        System.out.print("Selecciona una opción: "); // Mostramos mensaje
+        return scanner.nextLine(); // Guardamos lo que el usuario escribió
+    }
+
+    // Mostramos cualquier mensaje al usuario
+    public void mostrarMensaje(String mensaje) {
+        System.out.println(mensaje); // Pa' que el usuario se entere de algo
+    }
+
+    // Cerramos el scanner cuando terminamos
+    public void cerrarScanner() {
+        scanner.close(); // Limpieza final
+    }
+}
+
+// El controlador maneja toda la lógica del negocio, como el líder del equipo
+class PedidoControlador {
+    private PedidoModelo modelo; // Donde guardamos los pedidos
+    private PedidoVista vista; // Lo que el usuario ve e interactúa
+
+    // Constructor, conectamos el modelo con la vista
+    public PedidoControlador(PedidoModelo modelo, PedidoVista vista) {
+        this.modelo = modelo; // Guardamos el modelo
+        this.vista = vista; // Guardamos la vista
+    }
+
+    // Agregamos un pedido a través del controlador
+    public void agregarPedido(String nombrePlato) {
+        if (!nombrePlato.isEmpty()) { // Verificamos que no esté vacío
+            modelo.agregarPedido(new Pedido(nombrePlato)); // Lo añadimos al modelo
+            vista.mostrarMensaje("Pedido agregado: " + nombrePlato); // Confirmamos
+        } else {
+            vista.mostrarMensaje("El nombre del plato no puede estar vacío."); // Ups, error
+        }
+    }
+
+    // Mostramos los pedidos al usuario
+    public void mostrarPedidos() {
+        List<Pedido> pedidos = modelo.getPedidos(); // Obtenemos los pedidos
+        vista.mostrarPedidos(pedidos); // Los mostramos en la vista
+    }
+
+    // Iniciamos la app y manejamos el flujo
+    public void iniciar() {
+        String opcion; // Guardamos la opción seleccionada
+        do {
+            vista.mostrarMenu(); // Mostramos el menú
+            opcion = vista.solicitarOpcion(); // Pedimos la opción
+            switch (opcion) { // Evaluamos qué eligió el usuario
+                case "1": // Si eligió agregar pedido
+                    String nombrePlato = vista.solicitarNombrePlato(); // Pedimos nombre
+                    agregarPedido(nombrePlato); // Agregamos el pedido
+                    break;
+                case "2": // Si eligió mostrar pedidos
+                    mostrarPedidos(); // Mostramos la lista
+                    break;
+                case "3": // Si eligió salir
+                    vista.mostrarMensaje("Saliendo..."); // Despedida
+                    break;
+                default: // Si ingresó una opción no válida
+                    vista.mostrarMensaje("Opción no válida. Inténtalo de nuevo."); // Error
+            }
+        } while (!opcion.equals("3")); // Repetimos hasta que elija salir
+        vista.cerrarScanner(); // Cerramos el scanner al final
+    }
+}
