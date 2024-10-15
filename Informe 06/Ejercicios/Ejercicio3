@@ -1,0 +1,262 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
+// Modelo: Clase Item
+class Item {
+    private String nombre;
+    private int cantidad;
+    private String tipo; // Puede ser "Electrónica", "Ropa", "Comida", etc.
+    private String descripcion;
+
+    public Item(String nombre, int cantidad, String tipo, String descripcion) {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void usarItem() {
+        if (cantidad > 0) {
+            cantidad--;
+            System.out.println("Usaste el item: " + nombre);
+        } else {
+            System.out.println("No hay suficientes " + nombre + " para usar.");
+        }
+    }
+}
+
+// Modelo: Clase Jugador
+class Jugador {
+    private String nombre;
+    private int salud;
+    private int nivel;
+    private List<Item> inventario;
+    private Item itemEquipado;
+
+    public Jugador(String nombre, int salud, int nivel) {
+        this.nombre = nombre;
+        this.salud = salud;
+        this.nivel = nivel;
+        this.inventario = new ArrayList<>();
+        this.itemEquipado = null;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getSalud() {
+        return salud;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public List<Item> getInventario() {
+        return inventario;
+    }
+
+    public void agregarItem(Item item) {
+        inventario.add(item);
+    }
+
+    public void equiparItem(Item item) {
+        this.itemEquipado = item;
+        System.out.println(nombre + " ha equipado " + item.getNombre());
+    }
+
+    public void recibirDaño(int daño) {
+        salud -= daño;
+        System.out.println(nombre + " ha recibido " + daño + " de daño. Salud restante: " + salud);
+    }
+
+    public void atacar(Enemigo enemigo) {
+        int daño = (itemEquipado != null) ? 10 * nivel : 5 * nivel; // Más daño si tiene item equipado
+        enemigo.recibirDaño(daño);
+        System.out.println(nombre + " atacó a " + enemigo.getNombre() + " causando " + daño + " de daño.");
+    }
+
+    public boolean estaVivo() {
+        return salud > 0;
+    }
+}
+
+// Modelo: Clase Enemigo
+class Enemigo {
+    private String nombre;
+    private int salud;
+    private int nivel;
+    private String tipo;
+
+    public Enemigo(String nombre, int salud, int nivel, String tipo) {
+        this.nombre = nombre;
+        this.salud = salud;
+        this.nivel = nivel;
+        this.tipo = tipo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getSalud() {
+        return salud;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void recibirDaño(int daño) {
+        salud -= daño;
+        System.out.println(nombre + " ha recibido " + daño + " de daño. Salud restante: " + salud);
+    }
+
+    public void atacar(Jugador jugador) {
+        int daño = 5 * nivel; // Daño basado en nivel
+        jugador.recibirDaño(daño);
+        System.out.println(nombre + " atacó a " + jugador.getNombre() + " causando " + daño + " de daño.");
+    }
+
+    public boolean estaVivo() {
+        return salud > 0;
+    }
+}
+
+// Controlador del combate
+class CombateController {
+    private Jugador jugador;
+    private List<Enemigo> enemigos;
+    private Random random;
+
+    public CombateController(Jugador jugador, List<Enemigo> enemigos) {
+        this.jugador = jugador;
+        this.enemigos = enemigos;
+        this.random = new Random();
+    }
+
+    public void iniciarCombate() {
+        Scanner scanner = new Scanner(System.in);
+        while (jugador.estaVivo() && hayEnemigosVivos()) {
+            System.out.println("\n¿Qué deseas hacer?");
+            System.out.println("1. Atacar");
+            System.out.println("2. Usar Item");
+            int opcion = scanner.nextInt();
+
+            if (opcion == 1) {
+                System.out.println("Selecciona a un enemigo para atacar:");
+                for (int i = 0; i < enemigos.size(); i++) {
+                    if (enemigos.get(i).estaVivo()) {
+                        System.out.println((i + 1) + ". " + enemigos.get(i).getNombre());
+                    }
+                }
+                int enemigoSeleccionado = scanner.nextInt() - 1;
+                if (enemigos.get(enemigoSeleccionado).estaVivo()) {
+                    jugador.atacar(enemigos.get(enemigoSeleccionado));
+                }
+            } else if (opcion == 2) {
+                System.out.println("Selecciona un item para usar:");
+                List<Item> inventario = jugador.getInventario();
+                for (int i = 0; i < inventario.size(); i++) {
+                    System.out.println((i + 1) + ". " + inventario.get(i).getNombre());
+                }
+                int itemSeleccionado = scanner.nextInt() - 1;
+                inventario.get(itemSeleccionado).usarItem();
+            }
+
+            for (Enemigo enemigo : enemigos) {
+                if (enemigo.estaVivo()) {
+                    int accion = random.nextInt(2); // Atacar o no hacer nada
+                    if (accion == 0) {
+                        enemigo.atacar(jugador);
+                    }
+                }
+            }
+        }
+
+        if (jugador.estaVivo()) {
+            System.out.println("\n¡Has ganado el combate!");
+        } else {
+            System.out.println("\nHas sido derrotado.");
+        }
+    }
+
+    private boolean hayEnemigosVivos() {
+        for (Enemigo enemigo : enemigos) {
+            if (enemigo.estaVivo()) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+// Vista
+class CombateView {
+    public void mostrarEstadoJugador(Jugador jugador) {
+        System.out.println("\nJugador: " + jugador.getNombre());
+        System.out.println("Salud: " + jugador.getSalud());
+        System.out.println("Nivel: " + jugador.getNivel());
+    }
+
+    public void mostrarEstadoEnemigos(List<Enemigo> enemigos) {
+        System.out.println("\nEnemigos:");
+        for (Enemigo enemigo : enemigos) {
+            System.out.println(enemigo.getNombre() + " - Salud: " + enemigo.getSalud() + " - Nivel: " + enemigo.getNivel());
+        }
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        System.out.println(mensaje);
+    }
+}
+
+// Clase principal
+public class SistemaCombateMVC {
+    public static void main(String[] args) {
+        // Crear jugador
+        Jugador jugador = new Jugador("Jugador1", 100, 5);
+
+        // Crear enemigos
+        List<Enemigo> enemigos = new ArrayList<>();
+        enemigos.add(new Enemigo("Enemigo1", 50, 3, "Goblin"));
+        enemigos.add(new Enemigo("Enemigo2", 80, 4, "Orco"));
+
+        // Crear items
+        Item espada = new Item("Espada", 1, "Arma", "Espada poderosa");
+        Item pocion = new Item("Poción de Salud", 2, "Poción", "Restaura 50 de salud");
+        jugador.agregarItem(espada);
+        jugador.agregarItem(pocion);
+        jugador.equiparItem(espada);
+
+        // Vista y controlador de combate
+        CombateView vista = new CombateView();
+        CombateController controlador = new CombateController(jugador, enemigos);
+
+        // Mostrar estado inicial
+        vista.mostrarEstadoJugador(jugador);
+        vista.mostrarEstadoEnemigos(enemigos);
+
+        // Iniciar combate
+        controlador.iniciarCombate();
+    }
+}
