@@ -1,1 +1,189 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Clase Producto
+class Producto {
+    private String nombre;
+    private double precio;
+
+    public Producto(String nombre, double precio) {
+        this.nombre = nombre;
+        this.precio = precio;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+}
+
+// Clase Carrito
+class Carrito {
+    private List<Producto> productos = new ArrayList<>();
+
+    public void agregarProducto(Producto producto) {
+        productos.add(producto);
+    }
+
+    public void eliminarProducto(String nombreProducto) {
+        productos.removeIf(producto -> producto.getNombre().equalsIgnoreCase(nombreProducto));
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public double calcularTotal() {
+        return productos.stream().mapToDouble(Producto::getPrecio).sum();
+    }
+}
+
+// Clase Vista
+class Vista {
+    public void mostrarProductos(List<Producto> productos) {
+        System.out.println("Productos disponibles:");
+        for (Producto producto : productos) {
+            System.out.println(producto.getNombre() + " - $" + producto.getPrecio());
+        }
+    }
+
+    public void mostrarCarrito(List<Producto> productosCarrito) {
+        if (productosCarrito.isEmpty()) {
+            System.out.println("Tu carrito está vacío.");
+        } else {
+            System.out.println("Tu carrito:");
+            for (Producto producto : productosCarrito) {
+                System.out.println(producto.getNombre() + " - $" + producto.getPrecio());
+            }
+        }
+    }
+
+    public void mostrarTotal(double total) {
+        System.out.println("Total: $" + total);
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        System.out.println(mensaje);
+    }
+}
+
+// Clase Controlador
+class Controlador {
+    private List<Producto> productosDisponibles;
+    private Carrito carrito;
+    private Vista vista;
+
+    public Controlador(Carrito carrito, Vista vista) {
+        this.carrito = carrito;
+        this.vista = vista;
+        this.productosDisponibles = new ArrayList<>();
+        cargarProductos();
+    }
+
+    private void cargarProductos() {
+        productosDisponibles.add(new Producto("Laptop", 1000));
+        productosDisponibles.add(new Producto("Teléfono", 600));
+        productosDisponibles.add(new Producto("Auriculares", 100));
+    }
+
+    public void listarProductos() {
+        vista.mostrarProductos(productosDisponibles);
+    }
+
+    public void agregarProductoAlCarrito(String nombreProducto) {
+        for (Producto producto : productosDisponibles) {
+            if (producto.getNombre().equalsIgnoreCase(nombreProducto)) {
+                carrito.agregarProducto(producto);
+                vista.mostrarMensaje(nombreProducto + " agregado al carrito.");
+                return;
+            }
+        }
+        vista.mostrarMensaje("Producto no encontrado.");
+    }
+
+    public void eliminarProductoDelCarrito(String nombreProducto) {
+        carrito.eliminarProducto(nombreProducto);
+        vista.mostrarMensaje(nombreProducto + " eliminado del carrito.");
+    }
+
+    public void verCarrito() {
+        vista.mostrarCarrito(carrito.getProductos());
+    }
+
+    public void calcularTotal() {
+        vista.mostrarTotal(carrito.calcularTotal());
+    }
+
+    public void aplicarDescuento(double descuento) {
+        double total = carrito.calcularTotal();
+        double totalConDescuento = total - (total * descuento);
+        vista.mostrarTotal(totalConDescuento);
+    }
+
+    public void realizarCompra() {
+        double total = carrito.calcularTotal();
+        vista.mostrarMensaje("Compra realizada. Total: $" + total);
+        carrito = new Carrito(); // Limpiar carrito después de la compra
+    }
+}
+
+// Clase Principal
+public class AppCarrito {
+    public static void main(String[] args) {
+        Carrito carrito = new Carrito();
+        Vista vista = new Vista();
+        Controlador controlador = new Controlador(carrito, vista);
+
+        Scanner scanner = new Scanner(System.in);
+        String entrada;
+        boolean enEjecucion = true;
+
+        while (enEjecucion) {
+            System.out.println("Opciones: listar, agregar, eliminar, carrito, total, descuento, comprar, salir");
+            entrada = scanner.nextLine();
+
+            switch (entrada.toLowerCase()) {
+                case "listar":
+                    controlador.listarProductos();
+                    break;
+                case "agregar":
+                    System.out.println("Introduce el nombre del producto:");
+                    String nombreProducto = scanner.nextLine();
+                    controlador.agregarProductoAlCarrito(nombreProducto);
+                    break;
+                case "eliminar":
+                    System.out.println("Introduce el nombre del producto a eliminar:");
+                    nombreProducto = scanner.nextLine();
+                    controlador.eliminarProductoDelCarrito(nombreProducto);
+                    break;
+                case "carrito":
+                    controlador.verCarrito();
+                    break;
+                case "total":
+                    controlador.calcularTotal();
+                    break;
+                case "descuento":
+                    System.out.println("Introduce el descuento (ej: 0.1 para 10%):");
+                    double descuento = scanner.nextDouble();
+                    controlador.aplicarDescuento(descuento);
+                    scanner.nextLine(); // Consumir nueva línea
+                    break;
+                case "comprar":
+                    controlador.realizarCompra();
+                    break;
+                case "salir":
+                    enEjecucion = false;
+                    break;
+                default:
+                    System.out.println("Comando desconocido.");
+                    break;
+            }
+        }
+        scanner.close();
+    }
+}
 
