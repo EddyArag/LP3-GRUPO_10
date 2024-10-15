@@ -1,1 +1,14 @@
+// Esta clase representa cada pedido en el restaurante
+public class Pedido {
+    private String nombrePlato;
 
+    // Constructor para crear el pedido con el nombre del plato
+    public Pedido(String nombrePlato) {
+        this.nombrePlato = nombrePlato;
+    }
+
+    // Devuelve el nombre del plato, útil para mostrar en la vista
+    public String getNombrePlato() {
+        return nombrePlato;
+    }
+}
