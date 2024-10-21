@@ -13,7 +13,7 @@ public class Serial5 {
         Fecha f; // Declarar fecha
 
         try {
-            fos = new FileOutputStream("/ficheros/alumnos.dat"); // Crear el archivo de salida
+            fos = new FileOutputStream("D:\\Users\\Usuario\\Documents\\LPIII-CODIGOS\\INFORME07\\alumnos.dat"); // Crear el archivo de salida
             salida = new ObjectOutputStream(fos); // Crear ObjectOutputStream
             f = new Fecha(5, 9, 2011); // Crear fecha
             a = new Alumno("12345678A", "Lucas González", 20, f); // Crear alumno
@@ -30,8 +30,10 @@ public class Serial5 {
             System.out.println(e.getMessage()); // Mostrar mensaje de error de E/S
         } finally {
             try {
-                if (fos != null) fos.close(); // Cerrar FileOutputStream
-                if (salida != null) salida.close(); // Cerrar ObjectOutputStream
+                if (fos != null)
+                    fos.close(); // Cerrar FileOutputStream
+                if (salida != null)
+                    salida.close(); // Cerrar ObjectOutputStream
             } catch (IOException e) {
                 System.out.println(e.getMessage()); // Mostrar mensaje de error al cerrar
             }
