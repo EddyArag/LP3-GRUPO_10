@@ -1,12 +1,12 @@
 public class Persona {
     private String nombre; // Nombre de la persona
-    private String telefono; // Teléfono de la persona
-    private String direccion; // Dirección de la persona
+    private int edad;
+    private String nif;
 
-    public Persona(String nombre, String telefono, String direccion) {
+    public Persona(String nif, String nombre, int edad) {
+        this.nif = nif;
         this.nombre = nombre; // Asignar nombre
-        this.telefono = telefono; // Asignar teléfono
-        this.direccion = direccion; // Asignar dirección
+        this.edad = edad;
     }
 
     public String getNombre() {
@@ -15,6 +15,7 @@ public class Persona {
 
     @Override
     public String toString() {
-        return "Nombre: " + nombre + ", Teléfono: " + telefono + ", Dirección: " + direccion; // Representación en String
+        return "Nombre: " + nombre + ", Edad: " + edad + ", Nif: " + nif; // Representación en
+                                                                                              // String
     }
 }
