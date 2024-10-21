@@ -1,1 +1,193 @@
+import java.io.*;
+import java.util.*; // Esto ya incluye Scanner
+
+// Clase Empleado
+class Empleado {
+    private int numero;
+    private String nombre;
+    private double sueldo;
+
+    // Constructor
+    public Empleado(int numero, String nombre, double sueldo) {
+        this.numero = numero;
+        this.nombre = nombre;
+        this.sueldo = sueldo;
+    }
+
+    // Getters y Setters
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getSueldo() {
+        return sueldo;
+    }
+
+    public void setSueldo(double sueldo) {
+        this.sueldo = sueldo;
+    }
+
+    @Override
+    public String toString() {
+        return numero + "," + nombre + "," + sueldo;
+    }
+}
+
+// Clase Gestor
+class GestorEmpleados {
+    private List<Empleado> empleados;
+    private String archivo;
+
+    // Constructor
+    public GestorEmpleados(String archivo) {
+        this.archivo = archivo;
+        this.empleados = new ArrayList<>();
+        leerEmpleados();
+    }
+
+    // Método para leer empleados desde el archivo de texto
+    private void leerEmpleados() {
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+                int numero = Integer.parseInt(datos[0]);
+                String nombre = datos[1];
+                double sueldo = Double.parseDouble(datos[2]);
+                empleados.add(new Empleado(numero, nombre, sueldo));
+            }
+        } catch (IOException e) {
+            System.out.println("No se pudo cargar el archivo.");
+        }
+    }
+
+    // Método para guardar todos los empleados en el archivo
+    private void guardarEmpleados() {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo))) {
+            for (Empleado e : empleados) {
+                pw.println(e);
+            }
+        } catch (IOException e) {
+            System.out.println("No se pudo guardar el archivo.");
+        }
+    }
+
+    // Método para listar todos los empleados
+    public void listarEmpleados() {
+        if (empleados.isEmpty()) {
+            System.out.println("No hay empleados registrados.");
+        } else {
+            for (Empleado e : empleados) {
+                System.out.println("Número: " + e.getNumero() + ", Nombre: " + e.getNombre() + ", Sueldo: " + e.getSueldo());
+            }
+        }
+    }
+
+    // Método para agregar un nuevo empleado
+    public void agregarEmpleado(Empleado empleado) {
+        for (Empleado e : empleados) {
+            if (e.getNumero() == empleado.getNumero()) {
+                System.out.println("El empleado ya existe.");
+                return;
+            }
+        }
+        empleados.add(empleado);
+        guardarEmpleados();
+        System.out.println("Empleado agregado exitosamente.");
+    }
+
+    // Método para buscar un empleado por número
+    public Empleado buscarEmpleado(int numero) {
+        for (Empleado e : empleados) {
+            if (e.getNumero() == numero) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    // Método para eliminar un empleado por número
+    public void eliminarEmpleado(int numero) {
+        Empleado empleadoAEliminar = buscarEmpleado(numero);
+        if (empleadoAEliminar != null) {
+            empleados.remove(empleadoAEliminar);
+            guardarEmpleados();
+            System.out.println("Empleado eliminado exitosamente.");
+        } else {
+            System.out.println("No se encontró el empleado con número: " + numero);
+        }
+    }
+}
+
+// Clase principal con el menú de la aplicación
+public class GestorEmpleadosApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        GestorEmpleados gestor = new GestorEmpleados("empleados.txt");
+
+        int opcion;
+        do {
+            System.out.println("\n--- Menú ---");
+            System.out.println("1. Listar todos los empleados");
+            System.out.println("2. Agregar un nuevo empleado");
+            System.out.println("3. Buscar un empleado por número");
+            System.out.println("4. Eliminar un empleado por número");
+            System.out.println("5. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = sc.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    gestor.listarEmpleados();
+                    break;
+                case 2:
+                    System.out.print("Ingrese el número del empleado: ");
+                    int numero = sc.nextInt();
+                    sc.nextLine(); // Limpiar buffer
+                    System.out.print("Ingrese el nombre del empleado: ");
+                    String nombre = sc.nextLine();
+                    System.out.print("Ingrese el sueldo del empleado: ");
+                    double sueldo = sc.nextDouble();
+                    gestor.agregarEmpleado(new Empleado(numero, nombre, sueldo));
+                    break;
+                case 3:
+                    System.out.print("Ingrese el número del empleado a buscar: ");
+                    int numeroBuscar = sc.nextInt();
+                    Empleado empleado = gestor.buscarEmpleado(numeroBuscar);
+                    if (empleado != null) {
+                        System.out.println("Empleado encontrado: " + empleado);
+                    } else {
+                        System.out.println("Empleado no encontrado.");
+                    }
+                    break;
+                case 4:
+                    System.out.print("Ingrese el número del empleado a eliminar: ");
+                    int numeroEliminar = sc.nextInt();
+                    gestor.eliminarEmpleado(numeroEliminar);
+                    break;
+                case 5:
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
+        } while (opcion != 5);
+        sc.close(); 
+    }
+}
+
+
 
