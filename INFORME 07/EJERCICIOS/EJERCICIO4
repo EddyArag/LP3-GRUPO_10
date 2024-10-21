@@ -1,1 +1,63 @@
+import java.io.*;
+import java.util.*;
+
+public class ContadorPalabras {
+
+    // Verifica si un caracter es letra o dígito
+    private static boolean esPalabraValida(String palabra) {
+        for (char c : palabra.toCharArray()) {
+            if (!Character.isLetterOrDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        File archivo = new File("prueva.txt"); // Archivo a leer
+
+        // Manejo de archivo y conteo de líneas, palabras y caracteres
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            int totalLineas = 0;
+            int totalPalabras = 0;
+            int totalCaracteres = 0;
+            Map<String, Integer> frecuenciaPalabras = new HashMap<>();
+
+            while ((linea = reader.readLine()) != null) {
+                totalLineas++;
+                
+                // Dividimos la línea en palabras
+                String[] palabras = linea.split("\\s+");
+                for (String palabra : palabras) {
+                    if (esPalabraValida(palabra)) {
+                        totalPalabras++;
+                        totalCaracteres += palabra.length();
+                        
+                        // Añadir palabra al contador de frecuencia
+                        frecuenciaPalabras.put(palabra, frecuenciaPalabras.getOrDefault(palabra, 0) + 1);
+                    }
+                }
+            }
+
+            // Mostrar resultados
+            System.out.println("Total de líneas: " + totalLineas);
+            System.out.println("Total de palabras: " + totalPalabras);
+            System.out.println("Total de caracteres (sin contar saltos de línea): " + totalCaracteres);
+            System.out.println("Promedio de palabras por línea: " + (totalLineas > 0 ? (double) totalPalabras / totalLineas : 0));
+
+            // Mostrar palabras más frecuentes
+            System.out.println("Palabras más frecuentes:");
+            frecuenciaPalabras.entrySet().stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .limit(5) // Mostramos solo las 5 palabras más frecuentes
+                .forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+            
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo no encontrado.");
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer el archivo.");
+        }
+    }
+}
 
