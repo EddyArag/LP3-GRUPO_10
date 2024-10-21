@@ -1,1 +1,194 @@
+package EjercicosArchivos;
 
+import java.io.*;
+import java.util.*;
+
+// Clase Personaje
+class Personaje {
+    private String nombre;
+    private int vida;
+    private int ataque;
+    private int defensa;
+    private int alcance;
+
+    // Constructor
+    public Personaje(String nombre, int vida, int ataque, int defensa, int alcance) {
+        if (vida <= 0 || ataque <= 0 || defensa <= 0 || alcance <= 0) {
+            throw new IllegalArgumentException("Los valores de vida, ataque, defensa y alcance deben ser mayores a cero.");
+        }
+        this.nombre = nombre;
+        this.vida = vida;
+        this.ataque = ataque;
+        this.defensa = defensa;
+        this.alcance = alcance;
+    }
+
+    // Getters y Setters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        if (vida > 0) {
+            this.vida = vida;
+        } else {
+            throw new IllegalArgumentException("La vida debe ser mayor que cero.");
+        }
+    }
+
+    public int getAtaque() {
+        return ataque;
+    }
+
+    public void setAtaque(int ataque) {
+        if (ataque > 0) {
+            this.ataque = ataque;
+        } else {
+            throw new IllegalArgumentException("El ataque debe ser mayor que cero.");
+        }
+    }
+
+    public int getDefensa() {
+        return defensa;
+    }
+
+    public void setDefensa(int defensa) {
+        if (defensa > 0) {
+            this.defensa = defensa;
+        } else {
+            throw new IllegalArgumentException("La defensa debe ser mayor que cero.");
+        }
+    }
+
+    public int getAlcance() {
+        return alcance;
+    }
+
+    public void setAlcance(int alcance) {
+        if (alcance > 0) {
+            this.alcance = alcance;
+        } else {
+            throw new IllegalArgumentException("El alcance debe ser mayor que cero.");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " " + vida + " " + ataque + " " + defensa + " " + alcance;
+    }
+}
+
+// Clase Gestor
+class Gestor {
+    private List<Personaje> personajes;
+    private String archivo;
+
+    // Constructor
+    public Gestor(String archivo) {
+        this.archivo = archivo;
+        this.personajes = new ArrayList<>();
+        cargarPersonajes();
+    }
+
+    // Método para cargar personajes desde el archivo
+    private void cargarPersonajes() {
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(" ");
+                if (datos.length == 5) {
+                    String nombre = datos[0];
+                    int vida = Integer.parseInt(datos[1]);
+                    int ataque = Integer.parseInt(datos[2]);
+                    int defensa = Integer.parseInt(datos[3]);
+                    int alcance = Integer.parseInt(datos[4]);
+                    personajes.add(new Personaje(nombre, vida, ataque, defensa, alcance));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("No se pudo cargar el archivo.");
+        }
+    }
+
+    // Método para guardar los personajes en el archivo
+    private void guardarPersonajes() {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo))) {
+            for (Personaje p : personajes) {
+                pw.println(p);
+            }
+        } catch (IOException e) {
+            System.out.println("No se pudo guardar el archivo.");
+        }
+    }
+
+    // Método para añadir un nuevo personaje
+    public void agregarPersonaje(Personaje personaje) {
+        for (Personaje p : personajes) {
+            if (p.getNombre().equals(personaje.getNombre())) {
+                System.out.println("El personaje ya existe.");
+                return;
+            }
+        }
+        personajes.add(personaje);
+        guardarPersonajes();
+    }
+
+    // Método para borrar un personaje por su nombre
+    public void borrarPersonaje(String nombre) {
+        personajes.removeIf(p -> p.getNombre().equals(nombre));
+        guardarPersonajes();
+    }
+
+    // Método para modificar un personaje
+    public void modificarPersonaje(String nombre, int vida, int ataque, int defensa, int alcance) {
+        for (Personaje p : personajes) {
+            if (p.getNombre().equals(nombre)) {
+                p.setVida(vida);
+                p.setAtaque(ataque);
+                p.setDefensa(defensa);
+                p.setAlcance(alcance);
+                guardarPersonajes();
+                return;
+            }
+        }
+        System.out.println("El personaje no existe.");
+    }
+
+    // Método para mostrar todos los personajes
+    public void mostrarPersonajes() {
+        for (Personaje p : personajes) {
+            System.out.println(p);
+        }
+    }
+}
+
+// Clase principal con el método main
+public class Main {
+    public static void main(String[] args) {
+        // Crear una instancia del gestor de personajes, apuntando al archivo de texto
+        Gestor gestor = new Gestor("texto.txt");
+
+        // Crear nuevos personajes
+        gestor.agregarPersonaje(new Personaje("Caballero", 4, 2, 4, 2));
+        gestor.agregarPersonaje(new Personaje("Guerrero", 2, 4, 2, 4));
+        gestor.agregarPersonaje(new Personaje("Arquero", 2, 4, 1, 8));
+
+        // Mostrar personajes
+        System.out.println("Personajes actuales:");
+        gestor.mostrarPersonajes();
+
+        // Modificar personaje
+        System.out.println("\nModificando Arquero...");
+        gestor.modificarPersonaje("Arquero", 3, 5, 1, 9);
+        gestor.mostrarPersonajes();
+
+        // Borrar personaje
+        System.out.println("\nBorrando Guerrero...");
+        gestor.borrarPersonaje("Guerrero");
+        gestor.mostrarPersonajes();
+    }
+}
