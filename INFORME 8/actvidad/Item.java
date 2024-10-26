@@ -1,28 +1,28 @@
 public class Item {
     private int id;
-    private String name;
-    private String effect; // Ejemplo: 'Heals', 'Boosts Stamina'
+    private String nombre;
+    private String efecto; // Ejemplo: 'Cura', 'Aumenta Resistencia'
 
-    public Item(int id, String name, String effect) {
+    public Item(int id, String nombre, String efecto) {
         this.id = id;
-        this.name = name;
-        this.effect = effect;
+        this.nombre = nombre;
+        this.efecto = efecto;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public String getEffect() {
-        return effect;
+    public String getEfecto() {
+        return efecto;
     }
 
     @Override
     public String toString() {
-        return "Item{" + "id=" + id + ", name='" + name + '\'' + ", effect='" + effect + '\'' + '}';
+        return "Item{" + "id=" + id + ", nombre='" + nombre + "', efecto='" + efecto + "'}";
     }
 }
