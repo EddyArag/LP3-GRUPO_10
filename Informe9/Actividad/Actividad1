@@ -1,0 +1,67 @@
+import javax.swing.*;  // Importa las clases necesarias de Swing para crear componentes de GUI.
+import java.awt.*;     // Importa las clases AWT para el diseño de la GUI.
+
+public class FlowLayoutDemo extends JFrame {  // Clase principal que extiende JFrame para crear una ventana.
+    public FlowLayoutDemo() {
+        super("FlowLayout - Integrantes del grupo"); // Establece el título de la ventana.
+        setLayout(new FlowLayout()); // Configura el diseño de la ventana para usar FlowLayout.
+
+        // Crea 5 botones y los agrega a la ventana.
+        for (int i = 1; i <= 5; i++) {
+            add(new JButton("Botón " + i)); // Cada botón muestra su número (del 1 al 5).
+        }
+    }
+
+    public static void main(String[] args) {
+        FlowLayoutDemo ventana = new FlowLayoutDemo(); // Crea una instancia de la ventana.
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Termina la aplicación al cerrar la ventana.
+        ventana.setSize(300, 200); // Establece el tamaño de la ventana.
+        ventana.setVisible(true); // Hace visible la ventana en pantalla.
+    }
+}
+**************************************************************************
+import javax.swing.*;  // Importa las clases necesarias de Swing.
+import java.awt.*;     // Importa las clases AWT para diseño.
+
+public class BorderLayoutDemo extends JFrame {  // Clase principal que extiende JFrame para crear una ventana.
+    public BorderLayoutDemo() {
+        super("BorderLayout - Integrantes: Alexander, Piero, y Eddy"); // Establece el título de la ventana.
+        setLayout(new BorderLayout()); // Configura el diseño de la ventana para usar BorderLayout.
+
+        // Agrega botones a las distintas regiones del BorderLayout.
+        add(new JButton("NORTE"), BorderLayout.NORTH); // Botón en la parte superior.
+        add(new JButton("SUR"), BorderLayout.SOUTH);   // Botón en la parte inferior.
+        add(new JButton("ESTE"), BorderLayout.EAST);   // Botón en el lado derecho.
+        add(new JButton("OESTE"), BorderLayout.WEST);  // Botón en el lado izquierdo.
+        add(new JButton("CENTRO"), BorderLayout.CENTER); // Botón en el centro de la ventana.
+    }
+
+    public static void main(String[] args) {
+        BorderLayoutDemo ventana = new BorderLayoutDemo(); // Crea una instancia de la ventana.
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicación al cerrar la ventana.
+        ventana.setSize(400, 300); // Establece el tamaño de la ventana.
+        ventana.setVisible(true); // Hace visible la ventana en pantalla.
+    }
+}
+***************************************************************************
+import javax.swing.*;  // Importa las clases de Swing para los componentes de la GUI.
+import java.awt.*;     // Importa las clases AWT para el diseño de la GUI.
+
+public class GridLayoutDemo extends JFrame {  // Clase principal que extiende JFrame para crear una ventana.
+    public GridLayoutDemo() {
+        super("GridLayout - Integrantes: Alexander, Piero, y Eddy"); // Establece el título de la ventana.
+        setLayout(new GridLayout(2, 3)); // Configura un GridLayout con 2 filas y 3 columnas.
+
+        // Crea 6 botones y los agrega a la ventana.
+        for (int i = 1; i <= 6; i++) {
+            add(new JButton("Botón " + i)); // Cada botón muestra su número (del 1 al 6).
+        }
+    }
+
+    public static void main(String[] args) {
+        GridLayoutDemo ventana = new GridLayoutDemo(); // Crea una instancia de la ventana.
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Termina la aplicación al cerrar la ventana.
+        ventana.setSize(300, 200); // Establece el tamaño de la ventana.
+        ventana.setVisible(true); // Hace visible la ventana en pantalla.
+    }
+}
