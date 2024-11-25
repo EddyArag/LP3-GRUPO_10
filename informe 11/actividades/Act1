@@ -1,0 +1,393 @@
+import java.util.ArrayList;
+import java.util.List;
+
+interface Observer {
+    void update(String message);
+}
+
+class Usuario implements Observer {
+    private String name;
+
+    public Usuario(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void update(String message) {
+        System.out.println(name + " recibió: " + message);
+    }
+}
+
+class NotificationService {
+    private List<Observer> observers = new ArrayList<>();
+
+    public void subscribe(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void unsubscribe(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+}
+
+public class EjemploObserver {
+    public static void main(String[] args) {
+        NotificationService service = new NotificationService();
+
+        Usuario user1 = new Usuario("Usuario1");
+        Usuario user2 = new Usuario("Usuario2");
+
+        service.subscribe(user1);
+        service.subscribe(user2);
+
+        service.notifyObservers("Nueva promoción disponible.");
+        service.unsubscribe(user1);
+        service.notifyObservers("Actualización del producto.");
+    }
+}
+*************************************
+interface DiscountStrategy {
+    double aplicarDescuento(double precio, int cantidad);
+}
+
+class SinDescuento implements DiscountStrategy {
+    @Override
+    public double aplicarDescuento(double precio, int cantidad) {
+        return precio * cantidad;
+    }
+}
+
+class DescuentoFijo implements DiscountStrategy {
+    @Override
+    public double aplicarDescuento(double precio, int cantidad) {
+        return precio * cantidad * 0.9; // 10% de descuento
+    }
+}
+
+class DescuentoPorCantidad implements DiscountStrategy {
+    @Override
+    public double aplicarDescuento(double precio, int cantidad) {
+        if (cantidad > 2) {
+            return precio * cantidad * 0.7; // 30% de descuento
+        }
+        return precio * cantidad;
+    }
+}
+
+class CalculadoraDePrecios {
+    private DiscountStrategy estrategia;
+
+    public void establecerEstrategia(DiscountStrategy estrategia) {
+        this.estrategia = estrategia;
+    }
+
+    public double calcular(double precio, int cantidad) {
+        return estrategia.aplicarDescuento(precio, cantidad);
+    }
+}
+
+public class EjemploStrategy {
+    public static void main(String[] args) {
+        CalculadoraDePrecios calculadora = new CalculadoraDePrecios();
+
+        calculadora.establecerEstrategia(new SinDescuento());
+        System.out.println("Sin descuento: " + calculadora.calcular(100, 3));
+
+        calculadora.establecerEstrategia(new DescuentoFijo());
+        System.out.println("Con descuento fijo: " + calculadora.calcular(100, 3));
+
+        calculadora.establecerEstrategia(new DescuentoPorCantidad());
+        System.out.println("Descuento por cantidad: " + calculadora.calcular(100, 3));
+    }
+}
+***********************************************************
+// Interfaz Command
+interface Command {
+    void ejecutar();
+}
+
+// Receiver: Televisor
+class Televisor {
+    public void encender() {
+        System.out.println("Televisor encendido.");
+    }
+
+    public void apagar() {
+        System.out.println("Televisor apagado.");
+    }
+
+    public void aumentarVolumen() {
+        System.out.println("Volumen aumentado.");
+    }
+
+    public void reducirVolumen() {
+        System.out.println("Volumen reducido.");
+    }
+
+    public void cambiarCanal() {
+        System.out.println("Canal cambiado.");
+    }
+}
+
+// ConcreteCommand: EncenderCommand
+class EncenderCommand implements Command {
+    private Televisor televisor;
+
+    public EncenderCommand(Televisor televisor) {
+        this.televisor = televisor;
+    }
+
+    @Override
+    public void ejecutar() {
+        televisor.encender();
+    }
+}
+
+// ConcreteCommand: ApagarCommand
+class ApagarCommand implements Command {
+    private Televisor televisor;
+
+    public ApagarCommand(Televisor televisor) {
+        this.televisor = televisor;
+    }
+
+    @Override
+    public void ejecutar() {
+        televisor.apagar();
+    }
+}
+
+// ConcreteCommand: AumentarVolumenCommand
+class AumentarVolumenCommand implements Command {
+    private Televisor televisor;
+
+    public AumentarVolumenCommand(Televisor televisor) {
+        this.televisor = televisor;
+    }
+
+    @Override
+    public void ejecutar() {
+        televisor.aumentarVolumen();
+    }
+}
+
+// ConcreteCommand: ReducirVolumenCommand
+class ReducirVolumenCommand implements Command {
+    private Televisor televisor;
+
+    public ReducirVolumenCommand(Televisor televisor) {
+        this.televisor = televisor;
+    }
+
+    @Override
+    public void ejecutar() {
+        televisor.reducirVolumen();
+    }
+}
+
+// ConcreteCommand: CambiarCanalCommand
+class CambiarCanalCommand implements Command {
+    private Televisor televisor;
+
+    public CambiarCanalCommand(Televisor televisor) {
+        this.televisor = televisor;
+    }
+
+    @Override
+    public void ejecutar() {
+        televisor.cambiarCanal();
+    }
+}
+
+// Invoker: ControlRemoto
+class ControlRemoto {
+    private Command[] comandos = new Command[5]; // Hasta 5 botones
+
+    public void establecerCommand(int ranura, Command comando) {
+        comandos[ranura] = comando; // Configura el comando en la ranura
+    }
+
+    public void presionarBoton(int ranura) {
+        if (comandos[ranura] != null) {
+            comandos[ranura].ejecutar(); // Ejecuta el comando configurado en la ranura
+        } else {
+            System.out.println("Botón no configurado.");
+        }
+    }
+}
+
+// Client: Main
+public class EjemploCommand {
+    public static void main(String[] args) {
+        Televisor televisor = new Televisor(); // Receiver
+        ControlRemoto control = new ControlRemoto(); // Invoker
+
+        // Configurar comandos
+        control.establecerCommand(0, new EncenderCommand(televisor)); // Configura el botón 0 para encender
+        control.establecerCommand(1, new ApagarCommand(televisor)); // Configura el botón 1 para apagar
+        control.establecerCommand(2, new AumentarVolumenCommand(televisor)); // Configura el botón 2 para aumentar
+                                                                             // volumen
+        control.establecerCommand(3, new ReducirVolumenCommand(televisor)); // Configura el botón 3 para reducir volumen
+        control.establecerCommand(4, new CambiarCanalCommand(televisor)); // Configura el botón 4 para cambiar canal
+
+        // Ejecución de los comandos
+        control.presionarBoton(0); // Enciende el televisor
+        control.presionarBoton(2); // Aumenta el volumen
+        control.presionarBoton(3); // Reduce el volumen
+        control.presionarBoton(4); // Cambia el canal
+        control.presionarBoton(1); // Apaga el televisor
+    }
+}
+********************************************************************************
+import java.util.*;
+
+// Observer
+interface Observer {
+    void update(String mensaje);
+}
+
+class Usuario implements Observer {
+    private String nombre;
+
+    public Usuario(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public void update(String mensaje) {
+        System.out.println(nombre + " recibió la notificación: " + mensaje);
+    }
+}
+
+// Observable
+class GestorEventos {
+    private List<Observer> observadores = new ArrayList<>();
+
+    public void subscribe(Observer observador) {
+        observadores.add(observador);
+    }
+
+    public void unsubscribe(Observer observador) {
+        observadores.remove(observador);
+    }
+
+    public void notifyObservers(String mensaje) {
+        for (Observer observador : observadores) {
+            observador.update(mensaje);
+        }
+    }
+}
+
+// Strategy
+interface TicketPricingStrategy {
+    double calculatePrice(double precioBase);
+}
+
+class DescuentoEstudiante implements TicketPricingStrategy {
+    @Override
+    public double calculatePrice(double precioBase) {
+        return precioBase * 0.5; // 50% descuento
+    }
+}
+
+class PrecioRegular implements TicketPricingStrategy {
+    @Override
+    public double calculatePrice(double precioBase) {
+        return precioBase; // Precio normal
+    }
+}
+
+class PrecioVIP implements TicketPricingStrategy {
+    @Override
+    public double calculatePrice(double precioBase) {
+        return precioBase * 1.5; // 50% adicional
+    }
+}
+
+// Context
+class CalculadoraPrecioBoletos {
+    private TicketPricingStrategy strategy;
+
+    public void setStrategy(TicketPricingStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public double calculatePrice(double precioBase) {
+        return strategy.calculatePrice(precioBase);
+    }
+}
+
+// Command
+interface Command {
+    void execute();
+}
+
+class CrearEventoCommand implements Command {
+    private GestorEventos gestorEventos;
+    private String nombreEvento;
+
+    public CrearEventoCommand(GestorEventos gestorEventos, String nombreEvento) {
+        this.gestorEventos = gestorEventos;
+        this.nombreEvento = nombreEvento;
+    }
+
+    @Override
+    public void execute() {
+        gestorEventos.notifyObservers("Nuevo evento creado: " + nombreEvento);
+    }
+}
+
+class RegistrarUsuarioCommand implements Command {
+    private GestorEventos gestorEventos;
+    private Observer usuario;
+
+    public RegistrarUsuarioCommand(GestorEventos gestorEventos, Observer usuario) {
+        this.gestorEventos = gestorEventos;
+        this.usuario = usuario;
+    }
+
+    @Override
+    public void execute() {
+        gestorEventos.subscribe(usuario);
+        System.out.println("Usuario registrado para notificaciones.");
+    }
+}
+
+// Aplicación Principal
+public class CombinedApplication {
+    public static void main(String[] args) {
+        GestorEventos gestorEventos = new GestorEventos();
+
+        // Usuarios
+        Usuario usuario1 = new Usuario("Juan");
+        Usuario usuario2 = new Usuario("Maria");
+
+        // Comandos
+        Command registrarUsuario1 = new RegistrarUsuarioCommand(gestorEventos, usuario1);
+        Command registrarUsuario2 = new RegistrarUsuarioCommand(gestorEventos, usuario2);
+        Command crearEvento = new CrearEventoCommand(gestorEventos, "Concierto de Rock");
+
+        // Ejecutar comandos
+        registrarUsuario1.execute();
+        registrarUsuario2.execute();
+        crearEvento.execute();
+
+        // Precios de boletos
+        CalculadoraPrecioBoletos calculadora = new CalculadoraPrecioBoletos();
+
+        calculadora.setStrategy(new DescuentoEstudiante());
+        System.out.println("Precio para estudiantes: " + calculadora.calculatePrice(100));
+
+        calculadora.setStrategy(new PrecioRegular());
+        System.out.println("Precio regular: " + calculadora.calculatePrice(100));
+
+        calculadora.setStrategy(new PrecioVIP());
+        System.out.println("Precio VIP: " + calculadora.calculatePrice(100));
+    }
+}
